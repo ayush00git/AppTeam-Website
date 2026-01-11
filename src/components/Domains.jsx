@@ -1,190 +1,136 @@
 "use client";
-import React, { useState, useEffect } from 'react';
-import { Ubuntu } from "next/font/google";
+import React, { useState } from 'react';
+import { Space_Grotesk } from "next/font/google"; // Consistent Font
+import { motion } from "framer-motion";
 
-const ubuntu = Ubuntu({
+const spaceGrotesk = Space_Grotesk({
   weight: ["300", "400", "500", "700"],
   subsets: ["latin"],
 });
 
+const domains = [
+  {
+    id: "01",
+    title: 'WEB DEV',
+    description: 'Full-stack architecture using Next.js, React, and Node. Scalable, SEO-optimized, and performance-driven solutions.',
+  },
+  {
+    id: "02",
+    title: 'APP DEV',
+    description: 'Native and cross-platform ecosystems (iOS/Android). React Native & Flutter solutions focused on haptic UX.',
+  },
+  {
+    id: "03",
+    title: 'AI / ML',
+    description: 'Neural networks, NLP processing, and predictive modeling. Integrating intelligent agents into existing infrastructures.',
+  },
+  {
+    id: "04",
+    title: 'BLOCKCHAIN',
+    description: 'Smart contracts (Solidity), dApp development, and Web3 integration. Decentralized security protocols.',
+  },
+  {
+    id: "05",
+    title: 'OPEN SOURCE',
+    description: 'Community-driven development. Building public tools, libraries, and frameworks for the global dev ecosystem.',
+  },
+  {
+    id: "06",
+    title: 'CLOUD OPS',
+    description: 'Serverless architecture (AWS/Azure). CI/CD pipelines, Docker containerization, and Kubernetes orchestration.',
+  }
+];
 
 const OurDomains = () => {
-  const [selectedDomain, setSelectedDomain] = useState(null);
-
-  // Load fonts
-  useEffect(() => {
-    if (!document.querySelector('link[href*="Gasoek"]')) {
-      const gasoekLink = document.createElement('link');
-      gasoekLink.href = 'https://fonts.googleapis.com/css2?family=Gasoek+One&display=swap';
-      gasoekLink.rel = 'stylesheet';
-      document.head.appendChild(gasoekLink);
-    }
-  }, []);
-
-  // Animation observer for domain cards
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const delay = entry.target.dataset.delay || 0;
-            setTimeout(() => {
-              entry.target.classList.add('animate-fade-in-up');
-            }, delay);
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
-    );
-
-    const domainCards = document.querySelectorAll('.domain-card');
-    domainCards.forEach((card) => observer.observe(card));
-
-    return () => observer.disconnect();
-  }, []);
-
-  const domains = [
-    {
-      title: 'Web Development',
-      description: 'Building responsive, modern web applications with cutting-edge technologies like React, Next.js, and Node.js.',
-    },
-    {
-      title: 'Mobile App Development',
-      description: 'Creating native and cross-platform mobile applications for iOS and Android with seamless user experiences.',
-    },
-    {
-      title: 'AI & Machine Learning',
-      description: 'Developing intelligent solutions using machine learning, deep learning, and natural language processing.',
-    },
-    {
-      title: 'Blockchain',
-      description: 'Building decentralized applications, smart contracts, and blockchain-based solutions for the future.',
-    },
-    {
-      title: 'Open Source',
-      description: 'Fostering innovation through collaborative software development, community contributions, and transparent codebases.',
-    },
-    {
-      title: 'Cloud Computing',
-      description: 'Architecting scalable, and flexible infrastructure solutions using modern cloud providers and serverless technologies.',
-    }
-  ];
+  const [hoveredIndex, setHoveredIndex] = useState(null);
 
   return (
-    <React.Fragment>
-      {/* Custom Styles */}
-      <style jsx>{`
-        body {
-          font-family: 'Ubuntu', sans-serif !important;
-          user-select: none;
-        }
-        
-        .gasoek-font {
-          font-family: 'Gasoek One', sans-serif;
-        }
-        
-        .clip-path-polygon {
-          clip-path: polygon(0 0, 100% 8%, 100% 100%, 0 100%);
-        }
-        
-        .animate-fade-in-up {
-          animation: fadeInUp 0.8s ease-out forwards;
-        }
-        
-        @keyframes fadeInUp {
-          from {
-            opacity: 0;
-            transform: translateY(50px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        
-        .domain-card {
-          opacity: 0;
-          transform: translateY(50px);
-        }
-        
-        .tech-tag {
-          animation: float 3s ease-in-out infinite;
-        }
-        
-        .tech-tag:nth-child(2) { animation-delay: 0.5s; }
-        .tech-tag:nth-child(3) { animation-delay: 1s; }
-        .tech-tag:nth-child(4) { animation-delay: 1.5s; }
-        .tech-tag:nth-child(5) { animation-delay: 2s; }
-        
-        @keyframes float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-5px); }
-        }
-        
-        .modal-overlay {
-          backdrop-filter: blur(10px);
-          background: rgba(20, 11, 41, 0.8);
-        }
-      `}</style>
-
-      <div className={`${ubuntu.className} w-full min-h-screen bg-[#140b29] overflow-x-hidden relative`}>
-        {/* Header Section with Clip Path */}
-        <section className="bg-[#140b29] clip-path-polygon pb-20 pt-20 px-8">
-          <div className="text-center mb-16">
-            <h1 
-              className="gasoek-font font-normal text-[#a594f9] mb-6"
-              style={{ fontSize: 'clamp(3rem, 6vw, 6rem)' }}
-            >
-              OUR DOMAINS
-            </h1>
-            <p className="text-[#a594f9] text-xl md:text-2xl max-w-3xl mx-auto leading-relaxed opacity-80">
-              We excel in diverse technology domains, delivering innovative solutions that shape the digital future
-            </p>
-          </div>
-        </section>
-
-        {/* Background Elements */}
-        <div className="absolute top-1/2 left-10 w-32 h-32 border border-[#a594f9] opacity-10 rounded-full animate-pulse"></div>
-        <div className="absolute top-1/2 right-16 w-24 h-24 bg-[#a594f9] opacity-5 rotate-45"></div>
-        <div className="absolute bottom-40 left-20 w-40 h-40 border-2 border-[#a594f9] opacity-8 rotate-12"></div>
-        <div className="absolute bottom-20 right-24 w-16 h-16 bg-[#a594f9] opacity-10 rounded-full"></div>
-
-        {/* Domains Grid */}
-        <section className="px-8 pb-20 -mt-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-            {domains.map((domain, index) => (
-              <div 
-                key={index}
-                className="domain-card relative rounded-2xl overflow-hidden shadow-2xl h-64 transition-all duration-300 hover:-translate-y-2 hover:scale-100 hover:shadow-3xl group"
-                data-delay={index * 100}
-                onClick={() => setSelectedDomain(domain)}
-              >
-                <div className="w-full h-full bg-gradient-to-br from-[#a594f9] to-[#8c7ae6] flex flex-col justify-center p-8 relative transform transition-transform duration-300 ease-in-out hover:scale-105">
-                  {/* Background pattern */}
-                  <div className="absolute inset-0 opacity-10">
-                    <div className="absolute top-4 left-4 w-10 h-10 border-2 border-[#140b29] rounded-full"></div>
-                    <div className="absolute top-8 right-6 w-8 h-8 border border-[#140b29] rotate-45"></div>
-                    <div className="absolute bottom-8 left-8 w-6 h-6 bg-[#140b29] rounded-full"></div>
-                    <div className="absolute bottom-4 right-4 w-12 h-12 border-2 border-[#140b29] rotate-12"></div>
-                  </div>
-                  
-                  {/* Content */}
-                  <div className="text-center">
-                    <h3 className="text-[#140b29] font-bold text-2xl mb-4 leading-tight">
-                      {domain.title}
-                    </h3>
-                    <p className="text-[#140b29] text-sm opacity-80 leading-relaxed">
-                      {domain.description.substring(0, 120)}...
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
+    <section className={`relative w-full bg-[#080808] text-[#f4f4f5] py-24 px-4 md:px-8 ${spaceGrotesk.className} overflow-hidden`}>
+      
+      {/* --- BACKGROUND DECORATION --- */}
+      <div className="absolute top-0 right-0 p-10 opacity-20 pointer-events-none">
+        <svg width="200" height="200" viewBox="0 0 100 100" className="animate-[spin_10s_linear_infinite]">
+            <path d="M50 0 A50 50 0 0 1 50 100 A50 50 0 0 1 50 0 Z" fill="none" stroke="#ccff00" strokeWidth="1" strokeDasharray="10 5" />
+        </svg>
       </div>
-    </React.Fragment>
+
+      <div className="max-w-7xl mx-auto">
+        
+        {/* --- HEADER --- */}
+        <div className="mb-16 border-b border-[#333] pb-8 flex flex-col md:flex-row justify-between items-end gap-6">
+            <div>
+                <motion.span 
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    className="text-[#ccff00] text-sm font-bold tracking-widest uppercase mb-2 block"
+                >
+                    // System Capabilities
+                </motion.span>
+                <motion.h2 
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    className="text-5xl md:text-7xl font-bold uppercase tracking-tighter leading-none"
+                >
+                    Technical<br/>Domains
+                </motion.h2>
+            </div>
+            
+            <motion.p 
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                className="text-gray-400 max-w-sm text-sm md:text-base leading-relaxed"
+            >
+                We deploy comprehensive stacks across multiple environments. 
+                Precision engineering for the digital age.
+            </motion.p>
+        </div>
+
+        {/* --- THE GRID --- */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 border-t border-l border-[#333]">
+          {domains.map((domain, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1, duration: 0.5 }}
+              viewport={{ once: true }}
+              onMouseEnter={() => setHoveredIndex(index)}
+              onMouseLeave={() => setHoveredIndex(null)}
+              className="group relative border-r border-b border-[#333] min-h-[300px] p-8 flex flex-col justify-between transition-colors duration-300 hover:bg-[#ccff00] cursor-pointer"
+            >
+              {/* Top Row: Number & Icon */}
+              <div className="flex justify-between items-start">
+                <span className={`text-4xl font-light tracking-tighter transition-colors duration-300 ${hoveredIndex === index ? 'text-black' : 'text-[#333]'}`}>
+                    {domain.id}
+                </span>
+                
+                {/* Arrow Icon that rotates on hover */}
+                <svg 
+                    className={`w-6 h-6 transition-all duration-300 transform ${hoveredIndex === index ? 'rotate-45 text-black' : 'text-[#666]'}`} 
+                    viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
+                >
+                    <path d="M7 17L17 7M17 7H7M17 7V17" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </div>
+
+              {/* Bottom Row: Content */}
+              <div>
+                <h3 className={`text-2xl font-bold uppercase mb-4 transition-colors duration-300 ${hoveredIndex === index ? 'text-black' : 'text-[#f4f4f5]'}`}>
+                  {domain.title}
+                </h3>
+                <p className={`text-sm leading-relaxed transition-colors duration-300 ${hoveredIndex === index ? 'text-black/80 font-medium' : 'text-gray-400'}`}>
+                  {domain.description}
+                </p>
+              </div>
+
+              {/* Decorative "Corner" for technical feel */}
+              <div className={`absolute bottom-0 right-0 w-4 h-4 border-l border-t transition-colors duration-300 ${hoveredIndex === index ? 'border-black' : 'border-[#333]'}`} />
+            </motion.div>
+          ))}
+        </div>
+
+      </div>
+    </section>
   );
 };
 

@@ -1,104 +1,132 @@
 "use client";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { Gasoek_One, Ubuntu } from "next/font/google";
+import { Space_Grotesk } from "next/font/google"; // New Font
 
-// Load fonts properly
-const gasoek = Gasoek_One({
-  weight: "400",
-  subsets: ["latin"],
-});
-
-const ubuntu = Ubuntu({
-  weight: ["400", "500", "700"],
+// 1. New Font: Space Grotesk (Tech/Industrial vibe)
+const spaceGrotesk = Space_Grotesk({
+  weight: ["300", "500", "700"],
   subsets: ["latin"],
 });
 
 function HeroSection() {
   const router = useRouter();
-  const goToMembers = () => router.push("/member");
-  // const goToGithub = () => router.push("/githubRegistration");
+  const { scrollYProgress } = useScroll();
+  
+  // Parallax: Text moves sideways as you scroll down
+  const xLeft = useTransform(scrollYProgress, [0, 1], [0, -100]);
+  const xRight = useTransform(scrollYProgress, [0, 1], [0, 100]);
 
   return (
-    <section
-      className={`h-[80vh] flex items-center bg-[#140b29] justify-center relative px-8 overflow-hidden ${ubuntu.className}`}
-    >
-      <div className="text-center max-w-4xl mx-auto">
-        {/* Heading */}
-        <motion.h1
-          initial={{ opacity: 0, y: -50, scale: 0.95 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className={`${gasoek.className} font-extrabold text-[#a594f9] leading-none tracking-tight mb-6`}
-          style={{ fontSize: "clamp(4rem, 8vw, 8rem)" }}
-        >
-          APP<br />TEAM
-        </motion.h1>
+    <section className={`relative min-h-screen w-full bg-[#080808] text-[#f4f4f5] overflow-hidden ${spaceGrotesk.className}`}>
+      
+      {/* --- GRID BACKGROUND (Subtle, Flat Lines) --- */}
+      <div className="absolute inset-0 z-0 pointer-events-none opacity-20"
+        style={{
+            backgroundImage: `linear-gradient(#333 1px, transparent 1px), linear-gradient(90deg, #333 1px, transparent 1px)`,
+            backgroundSize: '100px 100px'
+        }}
+      />
 
-        {/* Tagline */}
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-          className="text-[#a594f9] text-xl md:text-2xl font-light mb-2 opacity-90"
-        >
-          Innovating Tomorrow&apos;s Technology Today
-        </motion.p>
+      <div className="relative z-10 flex flex-col justify-between min-h-screen pt-20 pb-10 px-6 md:px-12">
+        
+        {/* 1. Header Area (Top Left/Right) */}
+        <div className="flex justify-between items-start border-b border-[#333] pb-6">
+            <motion.div 
+                initial={{ y: -20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.5 }}
+                className="text-sm font-medium tracking-widest uppercase text-[#888]"
+            >
+                / EST. 2024
+            </motion.div>
+            <motion.div 
+                initial={{ y: -20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+                className="flex items-center gap-2"
+            >
+                <div className="w-2 h-2 bg-[#ccff00] rounded-full animate-pulse" />
+                <span className="text-sm font-bold tracking-widest uppercase text-[#ccff00]">System Online</span>
+            </motion.div>
+        </div>
 
-        {/* Subtitle */}
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-          className="text-gray-300 text-lg md:text-xl mb-12 max-w-2xl mx-auto leading-relaxed"
-        >
-          We&apos;re a passionate team of developers, designers, and innovators
-          crafting cutting-edge solutions across multiple technology domains
-        </motion.p>
+        {/* 2. MAIN TYPOGRAPHY (The Centerpiece) */}
+        <div className="flex-1 flex flex-col justify-center py-12">
+            <div className="overflow-hidden">
+                <motion.h1 
+                    style={{ x: xLeft }}
+                    initial={{ y: 150 }}
+                    animate={{ y: 0 }}
+                    transition={{ duration: 0.8, ease: [0.33, 1, 0.68, 1] }} // Custom bezier for snap
+                    className="text-[12vw] leading-[0.85] font-bold tracking-tighter uppercase whitespace-nowrap"
+                >
+                    APP TEAM
+                </motion.h1>
+            </div>
+            
+            <div className="overflow-hidden border-t border-[#333] mt-4 pt-4">
+                 <motion.div 
+                    style={{ x: xRight }}
+                    initial={{ y: 150 }}
+                    animate={{ y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.1, ease: [0.33, 1, 0.68, 1] }}
+                    className="flex items-center gap-6"
+                 >
+                    <h1 className="text-[12vw] leading-[0.85] font-light tracking-tighter uppercase whitespace-nowrap text-[#555]">
+                        SOLUTIONS
+                    </h1>
+                     {/* Decorative Arrow in the flow of text */}
+                    <div className="h-[8vw] w-[8vw] bg-[#ccff00] rounded-full flex items-center justify-center text-black">
+                        <svg width="50%" height="50%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    </div>
+                 </motion.div>
+            </div>
+        </div>
 
-        {/* CTA Buttons */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.9 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16"
-        >
-          <button
-            className="bg-[#a594f9] border-2 border-[#140b29] text-[#140b29] px-8 py-4 rounded-full cursor-pointer font-semibold text-lg hover:bg-[#140b29] hover:text-[#a594f9] hover:border-[#a594f9] transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
-            onClick={goToMembers}
-          >
-            Meet Our Team
-          </button>
-          {/* <button
-            className="border-2 border-[#a594f9] text-[#a594f9] px-8 py-4 rounded-full cursor-pointer font-semibold text-lg hover:bg-[#a594f9] hover:text-[#140b29] transform hover:scale-105 transition-all duration-300"
-            onClick={goToGithub}
-          >
-            Github Workshop
-          </button> */}
-        </motion.div>
+        {/* 3. Bottom Grid Info */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 border-t border-[#333] pt-8">
+            <div className="col-span-1 md:col-span-5">
+                <p className="text-xl md:text-2xl font-light leading-snug">
+                    Innovating tomorrow&apos;s technology. <br/>
+                    <span className="text-[#888]">Crafting code that matters.</span>
+                </p>
+            </div>
+            
+            <div className="col-span-1 md:col-span-4 flex flex-col justify-end">
+                <p className="text-sm font-mono text-[#666] mb-2">CURRENT STACK</p>
+                <div className="flex gap-4 text-sm font-medium">
+                    <span>NEXT.JS</span>
+                    <span>•</span>
+                    <span>REACT NATIVE</span>
+                    <span>•</span>
+                    <span>AWS</span>
+                </div>
+            </div>
+
+            <div className="col-span-1 md:col-span-3 flex justify-end items-end">
+                <button 
+                    onClick={() => router.push('/member')}
+                    className="w-full md:w-auto bg-[#f4f4f5] hover:bg-[#ccff00] text-black px-8 py-4 text-lg font-bold uppercase transition-colors duration-200"
+                >
+                    Start Project
+                </button>
+            </div>
+        </div>
+
       </div>
 
-      {/* Floating Elements */}
-      <motion.div
-        className="absolute top-20 left-10 w-20 h-20 border border-[#a594f9] opacity-20 rounded-full"
-        animate={{ scale: [1, 1.2, 1], opacity: [0.2, 0.4, 0.2] }}
-        transition={{ duration: 4, repeat: Infinity }}
-      />
-      <motion.div
-        className="absolute top-40 right-16 w-12 h-12 bg-[#a594f9] opacity-10 rotate-45"
-        animate={{ y: [0, -15, 0] }}
-        transition={{ duration: 3, repeat: Infinity }}
-      />
-      <motion.div
-        className="absolute bottom-32 left-20 w-16 h-16 border-2 border-[#a594f9] opacity-15 rotate-12"
-        animate={{ rotate: [12, -12, 12] }}
-        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-      />
-      <motion.div
-        className="absolute bottom-20 right-24 w-8 h-8 bg-[#a594f9] opacity-20 rounded-full"
-        animate={{ y: [0, -10, 0] }}
-        transition={{ duration: 2.5, repeat: Infinity }}
-      />
+      {/* 4. Scrolling Marquee (Infinite Loop Strip) */}
+      <div className="absolute bottom-20 left-0 w-full rotate-[-5deg] pointer-events-none opacity-10 mix-blend-difference z-0">
+         <motion.div 
+            animate={{ x: [0, -1000] }}
+            transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
+            className="whitespace-nowrap text-[10rem] font-bold leading-none"
+         >
+            DESIGN • DEVELOP • DEPLOY • DESIGN • DEVELOP • DEPLOY •
+         </motion.div>
+      </div>
+
     </section>
   );
 }

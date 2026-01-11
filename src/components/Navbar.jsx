@@ -1,161 +1,173 @@
 "use client";
-import React, { useState } from "react";
-import { Ubuntu } from "next/font/google";
+import React, { useState, useEffect } from "react";
+import { Space_Grotesk } from "next/font/google";
+import { motion, AnimatePresence } from "framer-motion";
+import { usePathname } from "next/navigation";
 
-const ubuntu = Ubuntu({
-  weight: ["300", "400", "500", "700"],
+// Same font as Hero for consistency
+const spaceGrotesk = Space_Grotesk({
+  weight: ["300", "500", "700"],
   subsets: ["latin"],
 });
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const pathname = usePathname();
+
+  // Detect scroll to add distinct border/background opacity
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const closeMenu = () => setIsMenuOpen(false);
 
-  const handleSmoothScroll = (e) => {
-    const href = e.currentTarget.getAttribute("href");
-    if (href && href.startsWith("#")) {
-      e.preventDefault();
-      const target = document.querySelector(href);
-      if (target) {
-        target.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
-      closeMenu();
-    }
-  };
+  const navLinks = [
+    { href: "/member", text: "Team" },
+    { href: "/aboutUs", text: "About" },
+    { href: "/events", text: "Events" },
+    { href: "/projects", text: "Projects" },
+    { href: "/contactUs", text: "Contact" },
+  ];
 
   return (
     <>
-      <style jsx>{`
-        .navbar-blur {
-          backdrop-filter: blur(20px);
-          -webkit-backdrop-filter: blur(20px);
-        }
-
-        .nav-link {
-          position: relative;
-        }
-
-        .nav-link::after {
-          content: "";
-          position: absolute;
-          width: 0;
-          height: 2px;
-          bottom: -5px;
-          left: 50%;
-          background: linear-gradient(90deg, #6366f1, #8b5cf6);
-          transition: all 0.3s ease;
-          transform: translateX(-50%);
-        }
-
-        .nav-link:hover::after {
-          width: 100%;
-        }
-
-        .hamburger span {
-          transition: 0.3s;
-        }
-
-        .hamburger.active span:nth-child(1) {
-          transform: rotate(45deg) translate(5px, 5px);
-          background: #6366f1;
-        }
-
-        .hamburger.active span:nth-child(2) {
-          opacity: 0;
-        }
-
-        .hamburger.active span:nth-child(3) {
-          transform: rotate(-45deg) translate(7px, -6px);
-          background: #6366f1;
-        }
-      `}</style>
-
       <nav
-        className={`${ubuntu.className} fixed top-5 left-1/2 transform -translate-x-1/2 w-[90%] max-w-6xl z-50 md:top-7`}
+        className={`${spaceGrotesk.className} fixed top-0 left-0 w-full z-50 flex justify-center pt-6 px-4`}
       >
-        <div className="bg-[#140b29] navbar-blur border border-indigo-500/30 rounded-2xl px-6 py-4 shadow-lg shadow-indigo-500/20 transition-all duration-300 ease-in-out md:px-8">
-          <div className="flex justify-between items-center">
-            {/* Logo */}
-            <a
-              href="/"
-              className="text-2xl font-extrabold text-indigo-400 no-underline shadow-indigo-400/50"
-              style={{ textShadow: "0 0 10px rgba(99, 102, 241, 0.5)" }}
-            >
-              AppTeam
-            </a>
-
-            {/* Desktop Navigation */}
-            <ul className="hidden md:flex list-none gap-12">
-              {[
-                { href: "/member", text: "Our Team" },
-                { href: "/aboutUs", text: "About Us" },
-                { href: "/events", text: "Events" },
-                { href: "/projects", text: "Projects" },
-                { href: "/contactUs", text: "Contact Us" },
-                { href: "/announcements", text: "Announcements" },
-                // { href: "/registration", text: "Registrations" },
-              ].map((link, index) => (
-                <li key={index}>
-                  <a
-                    href={link.href}
-                    className="nav-link no-underline text-gray-200 font-medium transition-all duration-300 ease-in-out hover:text-indigo-400"
-                    onClick={handleSmoothScroll}
-                  >
-                    {link.text}
-                  </a>
-                </li>
-              ))}
-            </ul>
-
-            {/* Mobile Hamburger */}
-            <div
-              className={`hamburger flex flex-col cursor-pointer gap-1 md:hidden ${
-                isMenuOpen ? "active" : ""
-              }`}
-              onClick={toggleMenu}
-            >
-              <span className="w-6 h-0.5 bg-gray-200 rounded-sm"></span>
-              <span className="w-6 h-0.5 bg-gray-200 rounded-sm"></span>
-              <span className="w-6 h-0.5 bg-gray-200 rounded-sm"></span>
+        <motion.div
+          initial={{ y: -100, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className={`
+            w-full max-w-6xl flex justify-between items-center 
+            px-6 py-4 transition-all duration-300
+            ${
+              scrolled || isMenuOpen
+                ? "bg-[#080808]/90 backdrop-blur-md border border-[#333]"
+                : "bg-transparent border border-transparent"
+            }
+          `}
+        >
+          {/* --- LOGO --- */}
+          <a href="/" className="relative group z-50">
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 bg-[#ccff00] rounded-sm group-hover:animate-pulse" />
+              <span className="text-xl font-bold tracking-tighter text-[#f4f4f5] uppercase">
+                AppTeam
+              </span>
             </div>
-          </div>
+          </a>
 
-          {/* Mobile Menu */}
-          <ul
-            className={`${
-              isMenuOpen ? "flex" : "hidden"
-            } md:hidden list-none flex-col gap-5 mt-6 p-5 bg-[#140b29] navbar-blur`}
-          >
-            {[
-              { href: "/member", text: "Our Team" },
-              { href: "/aboutUs", text: "About Us" },
-              { href: "/events", text: "Events" },
-              { href: "/projects", text: "Projects" },
-              { href: "/contactUs", text: "Contact Us" },
-              { href: "/announcements", text: "Announcements" },
-              // { href: "/registration", text: "Registrations" },
-            ].map((link, index) => (
+          {/* --- DESKTOP NAV --- */}
+          <ul className="hidden md:flex gap-8 items-center">
+            {navLinks.map((link, index) => (
               <li key={index}>
                 <a
                   href={link.href}
-                  className="no-underline text-gray-200 font-medium transition-all duration-300 ease-in-out hover:text-indigo-400"
-                  onClick={(e) => {
-                    handleSmoothScroll(e);
-                    closeMenu();
-                  }}
+                  className="relative group block overflow-hidden"
                 >
-                  {link.text}
+                  <span className="text-sm font-medium tracking-widest uppercase text-[#888] transition-colors duration-300 group-hover:text-[#ccff00]">
+                    {/* The Slash Animation */}
+                    <span className="inline-block translate-y-full group-hover:translate-y-0 transition-transform duration-300 text-[#ccff00] mr-1">
+                      //
+                    </span>
+                    {link.text}
+                  </span>
+                  
+                  {/* Active Indicator if needed */}
+                  {pathname === link.href && (
+                    <motion.div 
+                        layoutId="active-nav"
+                        className="absolute -bottom-1 left-0 w-full h-[1px] bg-[#ccff00]"
+                    />
+                  )}
                 </a>
               </li>
             ))}
+            
+            {/* CTA Button */}
+            <li>
+                <button className="px-5 py-2 text-xs font-bold uppercase tracking-widest border border-[#333] text-[#f4f4f5] hover:bg-[#ccff00] hover:text-black hover:border-[#ccff00] transition-all duration-300">
+                    Join Us
+                </button>
+            </li>
           </ul>
-        </div>
+
+          {/* --- MOBILE HAMBURGER (Geometric) --- */}
+          <button
+            onClick={toggleMenu}
+            className="md:hidden relative z-50 w-10 h-10 flex flex-col justify-center items-end gap-1.5 group"
+          >
+            <motion.span
+              animate={isMenuOpen ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }}
+              className="w-8 h-[2px] bg-[#f4f4f5] block origin-center transition-transform"
+            />
+            <motion.span
+              animate={isMenuOpen ? { opacity: 0 } : { opacity: 1 }}
+              className="w-5 h-[2px] bg-[#ccff00] block transition-opacity" // The lime accent line
+            />
+            <motion.span
+              animate={isMenuOpen ? { rotate: -45, y: -6 } : { rotate: 0, y: 0 }}
+              className="w-8 h-[2px] bg-[#f4f4f5] block origin-center transition-transform"
+            />
+          </button>
+        </motion.div>
       </nav>
 
-      {/* Spacer for fixed nav */}
-      <div className="bg-[#140b29] pt-24 md:pt-32"></div>
+      {/* --- MOBILE MENU OVERLAY --- */}
+      <AnimatePresence>
+        {isMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, clipPath: "polygon(0 0, 100% 0, 100% 0, 0 0)" }}
+            animate={{ opacity: 1, clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)" }}
+            exit={{ opacity: 0, clipPath: "polygon(0 0, 100% 0, 100% 0, 0 0)" }}
+            transition={{ duration: 0.4, ease: "easeInOut" }}
+            className={`fixed inset-0 bg-[#080808] z-40 flex flex-col justify-center items-center ${spaceGrotesk.className}`}
+          >
+            {/* Background Grid for Mobile Menu */}
+             <div className="absolute inset-0 z-0 pointer-events-none opacity-10"
+                style={{
+                    backgroundImage: `linear-gradient(#333 1px, transparent 1px), linear-gradient(90deg, #333 1px, transparent 1px)`,
+                    backgroundSize: '40px 40px'
+                }}
+            />
+
+            <ul className="relative z-10 flex flex-col gap-6 text-center">
+              {navLinks.map((link, index) => (
+                <motion.li
+                  key={index}
+                  initial={{ y: 40, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.1 + index * 0.1 }}
+                >
+                  <a
+                    href={link.href}
+                    onClick={closeMenu}
+                    className="text-4xl font-bold uppercase tracking-tighter text-[#f4f4f5] hover:text-[#ccff00] transition-colors"
+                  >
+                    {link.text}
+                  </a>
+                </motion.li>
+              ))}
+            </ul>
+            
+            <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.6 }}
+                className="absolute bottom-10 text-[#666] text-xs tracking-[0.2em]"
+            >
+                SYSTEM NAVIGATION
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 };

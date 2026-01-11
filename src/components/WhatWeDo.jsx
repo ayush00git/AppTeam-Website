@@ -1,219 +1,175 @@
 "use client";
-import React, { useState, useEffect, useRef } from 'react';
-import { Ubuntu } from "next/font/google";
+import React, { useRef } from 'react';
+import { Space_Grotesk } from "next/font/google";
+import { motion, useScroll, useTransform } from "framer-motion";
 
-const ubuntu = Ubuntu({
+const spaceGrotesk = Space_Grotesk({
   weight: ["300", "400", "500", "700"],
   subsets: ["latin"],
 });
 
-const WhatWeDo = () => {
-  const [activeSection, setActiveSection] = useState(0);
-  
-  const sectionsData = useRef([
-    {
-      id: "hack-on-hills",
-      title: "Conduct Hack on Hills",
-      description: "North India's biggest student-run hackathon, powered by our robust event management and judging platform with real-time updates and seamless participant experience.",
-      image: "/homepage/hoh.webp",
-      link: "https://www.hackonhills.com/"
-    },
-    {
-      id: "nimbus-app", 
-      title: "Nimbus App",
-      description: "A comprehensive platform for NIT Hamirpur's annual tech fest, offering schedules, live updates, interactive maps, and streamlined event registration features.",
-      image: "/homepage/nimbus.webp",
-      link: "https://play.google.com/store/apps/details?id=com.appteam.nimbus2k25&pcampaignid=web_share"
-    },
-    {
-      id: "hillfair-app",
-      title: "Hillfair App", 
-      description: "The official app for NIT Hamirpur's cultural fest, blending vibrant UI with seamless user experience to celebrate student creativity and cultural diversity through innovative features.",
-      image: "/homepage/hillfair.webp",
-      link: "https://play.google.com/store/apps/details?id=com.appteam.hillfair2k24&pcampaignid=web_share"
-    }
-  ]);
+const projects = [
+  {
+    id: "001",
+    title: "Hack On Hills",
+    role: "EVENT INFRASTRUCTURE",
+    date: "2024 / Q4",
+    tech: ["NEXT.JS", "SOCKET.IO", "POSTGRES"],
+    desc: "North India's largest hackathon platform. Engineered real-time judging portals, live leaderboards, and a registration system handling 5,000+ concurrent requests with zero downtime.",
+    link: "https://www.hackonhills.com/"
+  },
+  {
+    id: "002",
+    title: "Nimbus App",
+    role: "FEST UTILITY",
+    date: "2025 / Q1",
+    tech: ["REACT NATIVE", "FIREBASE", "MAPS API"],
+    desc: "The central nervous system for NIT Hamirpur's tech fest. Features include GPS-based campus navigation, QR attendance tracking, and decentralized event scheduling.",
+    link: "https://play.google.com/store/apps/details?id=com.appteam.nimbus2k25"
+  },
+  {
+    id: "003",
+    title: "Hillfair App",
+    role: "CULTURAL EXPERIENCE",
+    date: "2024 / Q3",
+    tech: ["FLUTTER", "NODE.JS", "AWS"],
+    desc: "A high-performance mobile application for the cultural fest. Focused on haptic feedback, fluid 60fps animations, and a social feed for real-time media sharing.",
+    link: "https://play.google.com/store/apps/details?id=com.appteam.hillfair2k24"
+  }
+];
 
-  // Load fonts
-  useEffect(() => {
-    if (!document.querySelector('link[href*="Gasoek"]')) {
-      const gasoekLink = document.createElement('link');
-      gasoekLink.href = 'https://fonts.googleapis.com/css2?family=Gasoek+One&display=swap';
-      gasoekLink.rel = 'stylesheet';
-      document.head.appendChild(gasoekLink);
-    }
-  }, []);
+const Card = ({ project, index, progress, range, targetScale }) => {
+  const container = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: container,
+    offset: ['start end', 'start start']
+  });
 
-  // Scroll handler for section detection (desktop only)
-  useEffect(() => {
-    const handleScroll = () => {
-      // Only enable scroll detection on desktop
-      if (window.innerWidth < 1024) return;
-      
-      const sectionElements = document.querySelectorAll('.content-section');
-      const windowHeight = window.innerHeight;
-      let newActiveSection = 0;
-
-      sectionElements.forEach((section, index) => {
-        const rect = section.getBoundingClientRect();
-        if (rect.top <= windowHeight * 0.6) {
-          newActiveSection = index;
-        }
-      });
-
-      if (newActiveSection !== activeSection) {
-        setActiveSection(newActiveSection);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    handleScroll(); // Initial call
-
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [activeSection]);
+  const scale = useTransform(progress, range, [1, targetScale]);
 
   return (
-    <React.Fragment>
-      <style jsx>{`
-        .gasoek-font {
-          font-family: 'Gasoek One', sans-serif;
-        }
-        
-        .purple-shape {
-          clip-path: polygon(0% 15%, 85% 0%, 100% 85%, 15% 100%);
-        }
-        
-        .section-image-transition {
-          transition: all 0.8s cubic-bezier(.4,2,.6,1);
-        }
-      `}</style>
+    <div ref={container} className="h-screen flex items-center justify-center sticky top-0">
+      <motion.div 
+        style={{ scale, top: `calc(5vh + ${index * 25}px)` }} 
+        // Changed max-w-4xl to w-[98%] to use full width
+        className="relative flex flex-col w-[95%] md:w-[98%] h-[75vh] bg-[#111] border border-[#333] rounded-t-xl overflow-hidden origin-top shadow-2xl"
+      >
+        {/* --- Header Bar --- */}
+        <div className="flex justify-between items-center px-6 md:px-12 py-6 border-b border-[#333] bg-[#161616]">
+            <div className="flex items-center gap-4">
+                <div className="w-3 h-3 bg-[#ccff00] rounded-full animate-pulse"/>
+                <span className="text-[#ccff00] font-mono text-sm tracking-widest uppercase">
+                    System // {project.id}
+                </span>
+            </div>
+            <div className="hidden md:flex gap-8 text-[#666] font-mono text-xs tracking-widest uppercase">
+                <span>Role: {project.role}</span>
+                <span>Date: {project.date}</span>
+            </div>
+        </div>
 
-      <div className="bg-[#140b29]">
-        {/* Mobile Layout */}
-        <div className="lg:hidden">
-          {/* Mobile Header */}
-          <div className="py-12 px-6 text-center">
-            <h1 
-              className="gasoek-font font-normal text-[#a594f9] tracking-wide uppercase leading-tight"
-              style={{ fontSize: 'clamp(2.5rem, 8vw, 4rem)' }}
-            >
-              WHAT WE DO
-            </h1>
-          </div>
+        {/* --- Main Content (Grid Layout for Full Width) --- */}
+        <div className="flex-1 relative p-6 md:p-12">
+            {/* Grid Texture */}
+            <div className="absolute inset-0 opacity-5 pointer-events-none" 
+                 style={{ backgroundImage: `linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)`, backgroundSize: '40px 40px' }} 
+            />
 
-          {/* Mobile Content Sections */}
-          <div className="px-6 pb-12">
-            {sectionsData.current.map((section, index) => (
-              <div 
-                key={section.id}
-                className={`${ubuntu.className} mb-8 last:mb-0`}
-              >
-                <h2 className="text-2xl font-bold mb-4 text-[#a594f9] leading-tight">
-                  {section.title}
-                </h2>
-                <p className="text-base leading-relaxed text-gray-200 mb-6 font-normal">
-                  {section.description}
-                </p>
-                <a 
-                  href={section.link} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-[#a594f9] hover:text-purple-200 transition-colors inline-flex items-center group text-sm font-medium"
-                >
-                  <span className="mr-2">
-                    {section.id === 'hack-on-hills' ? 'HACKONHILLS-7.0' : 
-                     section.id === 'nimbus-app' ? 'Nimbus-2k25' : 'Hillfair-2k24'}
-                  </span>
-                  <span className="transform group-hover:translate-x-2 transition-transform">→</span>
-                </a>
+            <div className="h-full grid grid-cols-1 lg:grid-cols-12 gap-12">
                 
-                {/* Divider line for mobile */}
-                {index < sectionsData.current.length - 1 && (
-                  <div 
-                    className="w-full h-0.5 mt-8"
-                    style={{ background: 'linear-gradient(90deg, #a594f9 0%, transparent 100%)' }}
-                  ></div>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
+                {/* Left Column: Massive Title */}
+                <div className="lg:col-span-7 flex flex-col justify-between">
+                     <h2 className="text-[12vw] lg:text-[7vw] font-bold uppercase tracking-tighter text-[#f4f4f5] leading-[0.85] break-words">
+                        {project.title}
+                    </h2>
+                    
+                    {/* Mobile Only Metadata */}
+                    <div className="flex lg:hidden gap-4 mt-4 mb-4">
+                         <span className="text-xs font-mono text-[#888] border border-[#333] px-2 py-1 rounded">{project.role}</span>
+                         <span className="text-xs font-mono text-[#888] border border-[#333] px-2 py-1 rounded">{project.date}</span>
+                    </div>
+                </div>
 
-        {/* Desktop Layout */}
-        <div className="hidden lg:flex lg:flex-row items-start">
-          {/* Left Panel - Sticky */}
-          <div className="lg:sticky lg:top-0 lg:w-1/2 h-screen flex items-center justify-center bg-[#140b29] flex-shrink-0 z-10">
-            <div className="relative w-80 h-[420px] flex items-center justify-center">
-              {/* Stacked images */}
-              {sectionsData.current.map((section, idx) => (
-                <img
-                  key={section.id}
-                  src={section.image}
-                  alt={section.title}
-                  className={`absolute left-1/2 top-1/2 w-64 h-96 rounded-xl object-cover shadow-2xl -translate-x-1/2 -translate-y-1/2 section-image-transition
-                    ${idx === activeSection ? 'z-30 opacity-100 scale-100' : idx < activeSection ? 'z-20 opacity-0 scale-95' : 'z-10 opacity-0 scale-95'}`}
-                  style={{ 
-                    transition: 'all 0.8s cubic-bezier(.4,2,.6,1)', 
-                    pointerEvents: idx === activeSection ? 'auto' : 'none' 
-                  }}
-                />
-              ))}
+                {/* Right Column: Details & Tech */}
+                <div className="lg:col-span-5 flex flex-col justify-end lg:border-l lg:border-[#333] lg:pl-12">
+                     
+                     <div className="mb-auto hidden lg:block">
+                        {/* Decorative Icon */}
+                        <svg className="w-12 h-12 text-[#333] mb-6" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" /></svg>
+                     </div>
+
+                     <p className="text-gray-400 text-lg md:text-2xl leading-relaxed mb-8">
+                        {project.desc}
+                     </p>
+
+                     <div className="space-y-6">
+                        <div>
+                            <span className="text-[#666] text-xs font-bold tracking-widest uppercase block mb-3">Tech Stack</span>
+                            <div className="flex flex-wrap gap-2">
+                                {project.tech.map((t, i) => (
+                                    <span key={i} className="text-xs md:text-sm font-mono text-[#ccff00] bg-[#ccff00]/10 px-3 py-1 border border-[#ccff00]/20">
+                                        {t}
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
+
+                        <a 
+                            href={project.link}
+                            target="_blank"
+                            className="w-full py-4 border text-white border-[#f4f4f5] hover:bg-[#ccff00] hover:border-[#ccff00] hover:text-black transition-all duration-300 text-center font-bold uppercase tracking-widest flex items-center justify-center gap-2 group"
+                        >
+                            Launch Project
+                            <span className="transform group-hover:translate-x-1 transition-transform">→</span>
+                        </a>
+                     </div>
+                </div>
             </div>
-          </div>
-
-          {/* Right Panel - Scrollable Content */}
-          <div className="lg:w-1/2 bg-[#140b29] relative z-20">
-            {/* Header */}
-            <div className="h-screen flex items-center justify-center px-8 lg:px-16">
-              <h1 
-                className="gasoek-font font-normal text-center text-[#a594f9] tracking-wide uppercase leading-tight"
-                style={{ fontSize: 'clamp(3rem, 5vw, 5rem)' }}
-              >
-                WHAT WE DO
-              </h1>
-            </div>
-
-            {/* Content Sections */}
-            {sectionsData.current.map((section, index) => (
-              <div 
-                key={section.id}
-                className={`${ubuntu.className} content-section min-h-[80vh] px-8 lg:px-16 py-16 flex flex-col justify-center transition-all duration-500 ${
-                  index === activeSection ? 'opacity-100 transform-none' : 'opacity-30 translate-y-5'
-                }`}
-              >
-                <h2 className="text-4xl font-bold mb-8 text-[#a594f9] leading-tight">
-                  {section.title}
-                </h2>
-                <p className="text-lg leading-relaxed text-gray-200 mb-12 max-w-[90%] font-normal">
-                  {section.description}
-                  <br />
-                  <a 
-                    href={section.link} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="text-[#a594f9] hover:text-purple-200 transition-colors inline-flex items-center mt-4 group"
-                  >
-                    <span className="mr-2">
-                      {section.id === 'hack-on-hills' ? 'HACKONHILLS-7.0' : 
-                       section.id === 'nimbus-app' ? 'Nimbus-2k25' : 'Hillfair-2k24'}
-                    </span>
-                    <span className="transform group-hover:translate-x-2 transition-transform">→</span>
-                  </a>
-                </p>
-                <div 
-                  className="w-full h-0.5 mt-auto"
-                  style={{ background: 'linear-gradient(90deg, #a594f9 0%, transparent 100%)' }}
-                ></div>
-              </div>
-            ))}
-
-            {/* Bottom Spacer */}
-            <div className="h-[50vh]"></div>
-          </div>
         </div>
-      </div>
-    </React.Fragment>
+      </motion.div>
+    </div>
   );
 };
 
-export default WhatWeDo;
+const ProjectStack = () => {
+  const container = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: container,
+    offset: ['start start', 'end end']
+  });
+
+  return (
+    <section className={`bg-[#080808] relative ${spaceGrotesk.className}`}>
+        
+        {/* Section Header */}
+        <div className="pt-24 pb-12 px-6 md:px-12 w-full border-b border-[#333] mb-12 flex justify-between items-end">
+            <h1 className="text-[#f4f4f5] text-6xl md:text-9xl font-bold uppercase tracking-tighter leading-none">
+                Selected <span className="text-[#ccff00]">Works</span>
+            </h1>
+            <div className="hidden md:block text-right">
+                <span className="block text-[#666] font-mono text-sm">ARCHIVE 2024-25</span>
+                <span className="block text-[#666] font-mono text-sm">SECURE DEPLOYMENT</span>
+            </div>
+        </div>
+
+        {/* Stack Container */}
+        <div ref={container} className="relative pb-[20vh]">
+            {projects.map((project, i) => {
+                const targetScale = 1 - ( (projects.length - i) * 0.05 );
+                return (
+                    <Card 
+                        key={i} 
+                        index={i} 
+                        project={project} 
+                        progress={scrollYProgress}
+                        range={[i * 0.25, 1]}
+                        targetScale={targetScale}
+                    />
+                );
+            })}
+        </div>
+    </section>
+  );
+};
+
+export default ProjectStack;
