@@ -1,134 +1,91 @@
 "use client";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { Space_Grotesk } from "next/font/google"; // New Font
+import { Space_Grotesk } from "next/font/google";
 
-// 1. New Font: Space Grotesk (Tech/Industrial vibe)
 const spaceGrotesk = Space_Grotesk({
-  weight: ["300", "500", "700"],
-  subsets: ["latin"],
+    weight: ["300", "500", "700"],
+    subsets: ["latin"],
 });
 
 function HeroSection() {
-  const router = useRouter();
-  const { scrollYProgress } = useScroll();
-  
-  // Parallax: Text moves sideways as you scroll down
-  const xLeft = useTransform(scrollYProgress, [0, 1], [0, -100]);
-  const xRight = useTransform(scrollYProgress, [0, 1], [0, 100]);
+    const router = useRouter();
+    const { scrollYProgress } = useScroll();
 
-  return (
-    <section className={`relative min-h-screen w-full bg-[#080808] text-[#f4f4f5] overflow-hidden ${spaceGrotesk.className}`}>
-      
-      {/* --- GRID BACKGROUND (Subtle, Flat Lines) --- */}
-      <div className="absolute inset-0 z-0 pointer-events-none opacity-20"
-        style={{
-            backgroundImage: `linear-gradient(#333 1px, transparent 1px), linear-gradient(90deg, #333 1px, transparent 1px)`,
-            backgroundSize: '100px 100px'
-        }}
-      />
+    // Smooth Parallax
+    const y = useTransform(scrollYProgress, [0, 1], [0, 200]);
+    const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
 
-      <div className="relative z-10 flex flex-col justify-between min-h-screen pt-20 pb-10 px-6 md:px-12">
-        
-        {/* 1. Header Area (Top Left/Right) */}
-        <div className="flex justify-between items-start border-b border-[#333] pb-6">
-            <motion.div 
-                initial={{ y: -20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.5 }}
-                className="text-sm font-medium tracking-widest uppercase text-[#888]"
-            >
-                / EST. 2024
-            </motion.div>
-            <motion.div 
-                initial={{ y: -20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.5, delay: 0.1 }}
-                className="flex items-center gap-2"
-            >
-                <div className="w-2 h-2 bg-[#ccff00] rounded-full animate-pulse" />
-                <span className="text-sm font-bold tracking-widest uppercase text-[#ccff00]">System Online</span>
-            </motion.div>
-        </div>
+    return (
+        <section className={`relative min-h-screen w-full bg-[#050505] text-[#f4f4f5] overflow-hidden ${spaceGrotesk.className}`}>
 
-        {/* 2. MAIN TYPOGRAPHY (The Centerpiece) */}
-        <div className="flex-1 flex flex-col justify-center py-12">
-            <div className="overflow-hidden">
-                <motion.h1 
-                    style={{ x: xLeft }}
-                    initial={{ y: 150 }}
-                    animate={{ y: 0 }}
-                    transition={{ duration: 0.8, ease: [0.33, 1, 0.68, 1] }} // Custom bezier for snap
-                    className="text-[12vw] leading-[0.85] font-bold tracking-tighter uppercase whitespace-nowrap"
-                >
-                    APP TEAM
-                </motion.h1>
+            {/* --- PREMIUM BACKGROUND (Soft Radial Gradient) --- */}
+            <div className="absolute inset-0 z-0 pointer-events-none">
+                <div className="absolute top-[-10%] right-[-10%] w-[60%] h-[60%] bg-[#00e1ff] opacity-[0.03] blur-[120px] rounded-full" />
+                <div className="absolute bottom-[10%] left-[-10%] w-[50%] h-[50%] bg-[#00e1ff] opacity-[0.02] blur-[100px] rounded-full" />
             </div>
-            
-            <div className="overflow-hidden border-t border-[#333] mt-4 pt-4">
-                 <motion.div 
-                    style={{ x: xRight }}
-                    initial={{ y: 150 }}
-                    animate={{ y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.1, ease: [0.33, 1, 0.68, 1] }}
-                    className="flex items-center gap-6"
-                 >
-                    <h1 className="text-[12vw] leading-[0.85] font-light tracking-tighter uppercase whitespace-nowrap text-[#555]">
-                        SOLUTIONS
-                    </h1>
-                     {/* Decorative Arrow in the flow of text */}
-                    <div className="h-[8vw] w-[8vw] bg-[#ccff00] rounded-full flex items-center justify-center text-black">
-                        <svg width="50%" height="50%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+
+            <div className="relative z-10 flex flex-col justify-between min-h-screen px-6 md:px-16 py-12">
+
+                {/* 1. CENTERPIECE TYPOGRAPHY */}
+                <main className="flex-1 flex flex-col justify-center">
+                    <motion.div
+                        style={{ y, opacity }}
+                        initial={{ opacity: 0, y: 40 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+                        className="relative"
+                    >
+                        <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-8">
+                            <h1 className="text-[14vw] md:text-[12vw] leading-none font-bold tracking-tight uppercase">
+                                APP TEAM
+                            </h1>
+
+                            {/* Integrated Arrow - Now Draggable */}
+                            <motion.div
+                                drag
+                                dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
+                                dragElastic={0.8}
+                                initial={{ scale: 0, rotate: -45 }}
+                                animate={{ scale: 1, rotate: 0 }}
+                                transition={{ delay: 0.8, duration: 0.8, type: "spring", stiffness: 100 }}
+                                className="w-16 h-16 md:w-24 md:h-24 bg-[#00e1ff] rounded-full flex items-center justify-center text-black shadow-[0_0_30px_rgba(0,225,255,0.3)] cursor-grab active:cursor-grabbing z-20"
+                            >
+                                <svg width="40%" height="40%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                                </svg>
+                            </motion.div>
+                        </div>
+
+                        <p className="mt-8 text-xl md:text-3xl font-light text-[#888] max-w-2xl leading-relaxed">
+                            Crafting premium digital experiences through <span className="text-white font-normal underline decoration-[#00e1ff]/30 decoration-2 underline-offset-8">thoughtful design</span> and elite engineering.
+                        </p>
+                    </motion.div>
+                </main>
+
+                {/* 2. ELEGANT FOOTER */}
+                <footer className="flex flex-col md:flex-row justify-between items-end gap-8">
+                    <div className="hidden md:block">
+                        <div className="w-12 h-px bg-[#333] mb-4" />
+                        <p className="text-xs tracking-widest text-[#444] uppercase font-medium">Creative / Modular / Precise</p>
                     </div>
-                 </motion.div>
-            </div>
-        </div>
 
-        {/* 3. Bottom Grid Info */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 border-t border-[#333] pt-8">
-            <div className="col-span-1 md:col-span-5">
-                <p className="text-xl md:text-2xl font-light leading-snug">
-                    Innovating tomorrow&apos;s technology. <br/>
-                    <span className="text-[#888]">Crafting code that matters.</span>
-                </p>
-            </div>
-            
-            <div className="col-span-1 md:col-span-4 flex flex-col justify-end">
-                <p className="text-sm font-mono text-[#666] mb-2">CURRENT STACK</p>
-                <div className="flex gap-4 text-sm font-medium">
-                    <span>NEXT.JS</span>
-                    <span>•</span>
-                    <span>REACT NATIVE</span>
-                    <span>•</span>
-                    <span>AWS</span>
-                </div>
+                    <motion.button
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 1, duration: 0.5 }}
+                        onClick={() => router.push('/member')}
+                        className="group relative px-10 py-5 bg-white text-black cursor-pointer font-bold uppercase tracking-widest overflow-hidden transition-all duration-300 hover:bg-[#00e1ff]"
+                    >
+                        <span className="relative z-10">Meet the Team</span>
+                        <div className="absolute inset-0 bg-[#00e1ff] translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+                    </motion.button>
+                </footer>
+
             </div>
 
-            <div className="col-span-1 md:col-span-3 flex justify-end items-end">
-                <button 
-                    onClick={() => router.push('/member')}
-                    className="w-full md:w-auto bg-[#f4f4f5] hover:bg-[#ccff00] text-black px-8 py-4 text-lg font-bold uppercase transition-colors duration-200"
-                >
-                    Start Project
-                </button>
-            </div>
-        </div>
-
-      </div>
-
-      {/* 4. Scrolling Marquee (Infinite Loop Strip) */}
-      <div className="absolute bottom-20 left-0 w-full rotate-[-5deg] pointer-events-none opacity-10 mix-blend-difference z-0">
-         <motion.div 
-            animate={{ x: [0, -1000] }}
-            transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
-            className="whitespace-nowrap text-[10rem] font-bold leading-none"
-         >
-            DESIGN • DEVELOP • DEPLOY • DESIGN • DEVELOP • DEPLOY •
-         </motion.div>
-      </div>
-
-    </section>
-  );
+        </section>
+    );
 }
 
 export default HeroSection;
