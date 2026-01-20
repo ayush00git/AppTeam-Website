@@ -61,7 +61,7 @@ const DomainCard = ({ domain, index }) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="absolute inset-0 bg-gradient-to-br from-[#00e1ff]/5 to-transparent z-0"
+            className="absolute inset-0 bg-linear-to-br from-[#00e1ff]/5 to-transparent z-0"
           />
         )}
       </AnimatePresence>
@@ -83,7 +83,7 @@ const DomainCard = ({ domain, index }) => {
       </div>
 
       {/* Decorative Line */}
-      <div className={`absolute bottom-0 left-0 w-full h-[1px] transition-all duration-700 origin-left scale-x-0 group-hover:scale-x-100 bg-[#00e1ff]/40`} />
+      <div className={`absolute bottom-0 left-0 w-full h-px transition-all duration-700 origin-left scale-x-0 group-hover:scale-x-100 bg-[#00e1ff]/40`} />
     </motion.div>
   );
 };
@@ -93,7 +93,7 @@ const OurDomains = () => {
     <section className={`relative w-full bg-[#050505] text-[#f4f4f5] py-40 px-6 md:px-16 ${spaceGrotesk.className} overflow-hidden`}>
 
       {/* Background Ambience */}
-      <div className="absolute top-0 right-[-10%] w-[60%] h-[60%] bg-[#00e1ff]/[0.02] blur-[150px] pointer-events-none" />
+      <div className="absolute top-0 right-[-10%] w-[60%] h-[60%] bg-[#00e1ff]/2 blur-[150px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto">
 

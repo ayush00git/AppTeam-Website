@@ -14,7 +14,7 @@ const Footer = () => {
         <footer className={`bg-[#050505] text-[#f4f4f5] py-32 px-6 md:px-16 border-t border-white/5 relative overflow-hidden ${spaceGrotesk.className}`}>
 
             {/* Background Glow */}
-            <div className="absolute bottom-0 right-0 w-[50%] h-[50%] bg-[#00e1ff]/[0.02] blur-[150px] pointer-events-none" />
+            <div className="absolute bottom-0 right-0 w-[50%] h-[50%] bg-[#00e1ff]/2 blur-[150px] pointer-events-none" />
 
             <div className="max-w-7xl mx-auto">
 
