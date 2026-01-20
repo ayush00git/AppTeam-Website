@@ -1,6 +1,5 @@
 "use client";
 import React, { useState } from 'react';
-import { useRouter } from "next/navigation";
 import { Space_Grotesk } from "next/font/google";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -42,50 +41,38 @@ const faqData = [
   }
 ];
 
-const FAQItem = ({ item, isOpen, onClick }) => {
+const FAQItem = ({ item, index, isOpen, onClick }) => {
   return (
-    <div className="border-b border-[#333]">
+    <div className="border-b border-white/5">
       <button
         onClick={onClick}
-        className="w-full py-8 flex items-start justify-between text-left group transition-colors duration-300"
+        className="w-full py-12 flex items-center justify-between text-left group transition-all duration-300"
       >
-        <div className="flex gap-6 md:gap-12">
-          {/* Index Number */}
-          <span className={`font-mono text-sm tracking-widest pt-1 transition-colors duration-300 ${isOpen ? 'text-[#ccff00]' : 'text-[#666]'}`}>
+        <div className="flex items-center gap-8 md:gap-16">
+          <span className={`text-[10px] font-mono tracking-widest transition-colors duration-500 ${isOpen ? 'text-[#00e1ff]' : 'text-[#333]'}`}>
             /{item.id}
           </span>
-          
-          {/* Question Text */}
-          <h3 className={`text-xl md:text-3xl font-bold uppercase tracking-tight transition-colors duration-300 ${isOpen ? 'text-[#ccff00]' : 'text-[#f4f4f5] group-hover:text-white'}`}>
+          <h3 className={`text-2xl md:text-5xl font-bold uppercase tracking-tighter transition-colors duration-500 ${isOpen ? 'text-white' : 'text-[#f4f4f5]/30 group-hover:text-[#f4f4f5]/60'}`}>
             {item.question}
           </h3>
         </div>
 
-        {/* Custom Plus/Close Icon */}
-        <div className="relative w-6 h-6 flex-shrink-0 mt-1">
-          <motion.span 
-            animate={{ rotate: isOpen ? 45 : 0, backgroundColor: isOpen ? '#ccff00' : '#f4f4f5' }}
-            className="absolute top-1/2 left-0 w-full h-[2px] bg-[#f4f4f5]"
-          />
-          <motion.span 
-             animate={{ rotate: isOpen ? 45 : 90, backgroundColor: isOpen ? '#ccff00' : '#f4f4f5' }}
-             className="absolute top-1/2 left-0 w-full h-[2px] bg-[#f4f4f5]"
-          />
+        <div className={`text-3xl transition-transform duration-500 ${isOpen ? 'rotate-45 text-[#00e1ff]' : 'text-[#333]'}`}>
+          +
         </div>
       </button>
 
-      {/* Answer Dropdown */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             className="overflow-hidden"
           >
-            <div className="pl-[3.5rem] md:pl-[6.5rem] pr-4 pb-8">
-              <p className="text-[#888] text-lg leading-relaxed max-w-3xl border-l-2 border-[#333] pl-6">
+            <div className="pb-16 pl-16 md:pl-32 max-w-4xl">
+              <p className="text-[#888] text-xl md:text-2xl font-light leading-relaxed">
                 {item.answer}
               </p>
             </div>
@@ -98,67 +85,31 @@ const FAQItem = ({ item, isOpen, onClick }) => {
 
 const FAQ = () => {
   const [openIndex, setOpenIndex] = useState(null);
-  const router = useRouter();
 
   const handleToggle = (index) => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
   return (
-    <section className={`bg-[#080808] min-h-screen py-24 px-6 md:px-12 relative ${spaceGrotesk.className}`}>
-      
-      {/* Background Decor */}
-      <div className="absolute top-0 right-0 p-6 opacity-20 pointer-events-none">
-         <span className="block w-24 h-24 border-r border-t border-[#f4f4f5]"></span>
-      </div>
+    <section className={`bg-[#050505] py-40 px-6 md:px-16 ${spaceGrotesk.className}`}>
+      <div className="max-w-7xl mx-auto">
 
-      <div className="max-w-6xl mx-auto">
-        
-        {/* --- Header --- */}
-        <div className="mb-20 flex flex-col md:flex-row justify-between items-end border-b-2 border-[#f4f4f5] pb-8">
-          <div>
-             <span className="text-[#ccff00] font-bold tracking-widest text-xs uppercase mb-2 block">
-                // System Queries
-             </span>
-             <h1 className="text-5xl md:text-7xl font-bold uppercase tracking-tighter text-[#f4f4f5]">
-                Common<br/>Protocols
-             </h1>
-          </div>
-          <div className="hidden md:block text-right">
-             <p className="text-[#666] font-mono text-sm max-w-xs">
-                Database Access Level: PUBLIC<br/>
-                Last Updated: 2025
-             </p>
-          </div>
-        </div>
+        <header className="mb-32">
+          <h2 className="text-7xl md:text-[10vw] font-bold uppercase tracking-tighter leading-none text-white">
+            Faq
+          </h2>
+        </header>
 
-        {/* --- FAQ List --- */}
-        <div className="border-t border-[#333]">
+        <div className="border-t border-white/5">
           {faqData.map((item, index) => (
             <FAQItem
-              key={item.id}
+              key={index}
               item={item}
+              index={index}
               isOpen={openIndex === index}
               onClick={() => handleToggle(index)}
             />
           ))}
-        </div>
-
-        {/* --- Contact Footer --- */}
-        <div className="mt-24 pt-12 flex flex-col items-center text-center">
-            <p className="text-[#666] uppercase tracking-widest text-sm mb-6">
-                Query not found in database?
-            </p>
-            <button 
-                onClick={() => router.push("/contactUs")}
-                className="group relative px-10 py-5 bg-[#111] border border-[#333] overflow-hidden"
-            >
-                <div className="absolute inset-0 w-0 bg-[#ccff00] transition-all duration-[250ms] ease-out group-hover:w-full opacity-100" />
-                <span className="relative z-10 text-[#f4f4f5] font-bold uppercase tracking-widest group-hover:text-black transition-colors duration-300 flex items-center gap-3">
-                    Initiate Contact
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-                </span>
-            </button>
         </div>
 
       </div>

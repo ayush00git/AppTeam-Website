@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from 'react';
-import { Space_Grotesk } from "next/font/google"; // Consistent Font
-import { motion } from "framer-motion";
+import { Space_Grotesk } from "next/font/google";
+import { motion, AnimatePresence } from "framer-motion";
 
 const spaceGrotesk = Space_Grotesk({
   weight: ["300", "400", "500", "700"],
@@ -41,91 +41,89 @@ const domains = [
   }
 ];
 
-const OurDomains = () => {
-  const [hoveredIndex, setHoveredIndex] = useState(null);
+const DomainCard = ({ domain, index }) => {
+  const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <section className={`relative w-full bg-[#080808] text-[#f4f4f5] py-24 px-4 md:px-8 ${spaceGrotesk.className} overflow-hidden`}>
-      
-      {/* --- BACKGROUND DECORATION --- */}
-      <div className="absolute top-0 right-0 p-10 opacity-20 pointer-events-none">
-        <svg width="200" height="200" viewBox="0 0 100 100" className="animate-[spin_10s_linear_infinite]">
-            <path d="M50 0 A50 50 0 0 1 50 100 A50 50 0 0 1 50 0 Z" fill="none" stroke="#ccff00" strokeWidth="1" strokeDasharray="10 5" />
-        </svg>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
+      viewport={{ once: true }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className="group relative p-12 h-80 flex flex-col justify-between overflow-hidden cursor-crosshair border-b border-white/5 md:border-r"
+    >
+      {/* Soft Glow */}
+      <AnimatePresence>
+        {isHovered && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="absolute inset-0 bg-gradient-to-br from-[#00e1ff]/5 to-transparent z-0"
+          />
+        )}
+      </AnimatePresence>
+
+      <div className="relative z-10">
+        <h3 className="text-4xl md:text-5xl font-bold uppercase tracking-tighter mt-4 transition-all duration-500 group-hover:tracking-normal group-hover:text-white text-[#f4f4f5]/60">
+          {domain.title}
+        </h3>
       </div>
 
+      <div className="relative z-10 overflow-hidden">
+        <motion.p
+          animate={{ y: isHovered ? 0 : 20, opacity: isHovered ? 1 : 0 }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
+          className="text-gray-400 text-lg max-w-sm leading-relaxed"
+        >
+          {domain.description}
+        </motion.p>
+      </div>
+
+      {/* Decorative Line */}
+      <div className={`absolute bottom-0 left-0 w-full h-[1px] transition-all duration-700 origin-left scale-x-0 group-hover:scale-x-100 bg-[#00e1ff]/40`} />
+    </motion.div>
+  );
+};
+
+const OurDomains = () => {
+  return (
+    <section className={`relative w-full bg-[#050505] text-[#f4f4f5] py-40 px-6 md:px-16 ${spaceGrotesk.className} overflow-hidden`}>
+
+      {/* Background Ambience */}
+      <div className="absolute top-0 right-[-10%] w-[60%] h-[60%] bg-[#00e1ff]/[0.02] blur-[150px] pointer-events-none" />
+
       <div className="max-w-7xl mx-auto">
-        
+
         {/* --- HEADER --- */}
-        <div className="mb-16 border-b border-[#333] pb-8 flex flex-col md:flex-row justify-between items-end gap-6">
-            <div>
-                <motion.span 
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    className="text-[#ccff00] text-sm font-bold tracking-widest uppercase mb-2 block"
-                >
-                    // System Capabilities
-                </motion.span>
-                <motion.h2 
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    className="text-5xl md:text-7xl font-bold uppercase tracking-tighter leading-none"
-                >
-                    Technical<br/>Domains
-                </motion.h2>
-            </div>
-            
-            <motion.p 
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                className="text-gray-400 max-w-sm text-sm md:text-base leading-relaxed"
+        <header className="mb-24 flex flex-col md:flex-row justify-between items-end gap-12">
+          <div>
+            <motion.h2
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="text-7xl md:text-[10vw] font-bold uppercase tracking-tighter leading-none"
             >
-                We deploy comprehensive stacks across multiple environments. 
-                Precision engineering for the digital age.
-            </motion.p>
-        </div>
+              Core<br />Domains
+            </motion.h2>
+          </div>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ delay: 0.4 }}
+            className="text-gray-500 max-w-xs text-lg md:text-xl font-light leading-relaxed text-right md:mb-6"
+          >
+            We focus on high-end engineering and design across specialized technical environments.
+          </motion.p>
+        </header>
 
         {/* --- THE GRID --- */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 border-t border-l border-[#333]">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 border-t border-white/5">
           {domains.map((domain, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1, duration: 0.5 }}
-              viewport={{ once: true }}
-              onMouseEnter={() => setHoveredIndex(index)}
-              onMouseLeave={() => setHoveredIndex(null)}
-              className="group relative border-r border-b border-[#333] min-h-[300px] p-8 flex flex-col justify-between transition-colors duration-300 hover:bg-[#ccff00] cursor-pointer"
-            >
-              {/* Top Row: Number & Icon */}
-              <div className="flex justify-between items-start">
-                <span className={`text-4xl font-light tracking-tighter transition-colors duration-300 ${hoveredIndex === index ? 'text-black' : 'text-[#333]'}`}>
-                    {domain.id}
-                </span>
-                
-                {/* Arrow Icon that rotates on hover */}
-                <svg 
-                    className={`w-6 h-6 transition-all duration-300 transform ${hoveredIndex === index ? 'rotate-45 text-black' : 'text-[#666]'}`} 
-                    viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
-                >
-                    <path d="M7 17L17 7M17 7H7M17 7V17" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </div>
-
-              {/* Bottom Row: Content */}
-              <div>
-                <h3 className={`text-2xl font-bold uppercase mb-4 transition-colors duration-300 ${hoveredIndex === index ? 'text-black' : 'text-[#f4f4f5]'}`}>
-                  {domain.title}
-                </h3>
-                <p className={`text-sm leading-relaxed transition-colors duration-300 ${hoveredIndex === index ? 'text-black/80 font-medium' : 'text-gray-400'}`}>
-                  {domain.description}
-                </p>
-              </div>
-
-              {/* Decorative "Corner" for technical feel */}
-              <div className={`absolute bottom-0 right-0 w-4 h-4 border-l border-t transition-colors duration-300 ${hoveredIndex === index ? 'border-black' : 'border-[#333]'}`} />
-            </motion.div>
+            <DomainCard key={index} domain={domain} index={index} />
           ))}
         </div>
 
