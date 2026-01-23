@@ -22,7 +22,7 @@ const projects = [
     role: "FEST UTILITY",
     date: "2025 / Q1",
     tech: ["REACT NATIVE", "FIREBASE", "MAPS API"],
-    desc: "The central nervous system for NIT Hamirpur's tech fest. Features include GPS-based campus navigation, QR attendance tracking, and decentralized event scheduling.",
+    desc: "The central nervous system for NIT Hamirpur's tech fest. Every year with new and fun features.",
     link: "https://play.google.com/store/apps/details?id=com.appteam.nimbus2k25"
   },
   {
@@ -127,7 +127,7 @@ const ProjectStack = () => {
           className="text-center"
         >
           <h2 className={`${spaceGrotesk.className} text-white text-8xl md:text-[16vw] font-bold uppercase tracking-tighter leading-none`}>
-            WHAT WE<br />DO ?
+            WHAT WE<br />D<span className="text-[#00e1ff]">O</span> ?
           </h2>
         </motion.div>
       </div>

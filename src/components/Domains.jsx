@@ -106,7 +106,7 @@ const OurDomains = () => {
               transition={{ delay: 0.2 }}
               className="text-7xl md:text-[10vw] font-bold uppercase tracking-tighter leading-none"
             >
-              Core<br />Domains
+              Core<br />Domain<span className="text-[#00e1ff]">s</span>
             </motion.h2>
           </div>
 

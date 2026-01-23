@@ -16,6 +16,11 @@ function HeroSection() {
     const y = useTransform(scrollYProgress, [0, 1], [0, 200]);
     const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
 
+    // Float animation for the last 3 letters in TEAM (staggered)
+    const eFloat = useTransform(scrollYProgress, [0, 0.3], [0, -150]);
+    const aFloat = useTransform(scrollYProgress, [0, 0.3], [0, -250]);
+    const mFloat = useTransform(scrollYProgress, [0, 0.3], [0, -350]);
+
     return (
         <section className={`relative min-h-screen w-full bg-[#050505] text-[#f4f4f5] overflow-hidden ${spaceGrotesk.className}`}>
 
@@ -38,7 +43,7 @@ function HeroSection() {
                     >
                         <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-8">
                             <h1 className="text-[14vw] md:text-[12vw] leading-none font-bold tracking-tight uppercase">
-                                APP TEAM
+                                APP T<motion.span style={{ y: eFloat }} className="inline-block">E</motion.span><motion.span style={{ y: aFloat }} className="inline-block">A</motion.span><motion.span style={{ y: mFloat }} className="inline-block text-[#00e1ff]">M</motion.span>
                             </h1>
 
                             {/* Integrated Arrow - Now Draggable */}

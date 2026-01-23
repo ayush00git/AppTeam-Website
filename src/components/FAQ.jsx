@@ -96,7 +96,7 @@ const FAQ = () => {
 
         <header className="mb-32">
           <h2 className="text-7xl md:text-[10vw] font-bold uppercase tracking-tighter leading-none text-white">
-            Faq
+            Fa<span className="text-[#00e1ff]">q</span>
           </h2>
         </header>
 
