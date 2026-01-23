@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { Space_Grotesk } from "next/font/google";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 const spaceGrotesk = Space_Grotesk({
   weight: ["300", "400", "500", "700"],
@@ -10,6 +11,7 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 const NewMemberForm = () => {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     name: "",
     role: "",
@@ -133,6 +135,11 @@ const NewMemberForm = () => {
           profileImageURL: null,
         });
         resetFileInput();
+
+        // Redirect to /member page after 2 seconds
+        setTimeout(() => {
+          router.push("/member");
+        }, 2000);
       } else {
         const errorData = await response.json();
         setError(errorData.message || "Failed to submit form");

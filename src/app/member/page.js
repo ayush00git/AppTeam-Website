@@ -30,11 +30,11 @@ const OurTeam = () => {
 
   const categorizeMembers = () => {
     const categories = {
-      alumni: { title: "Alumni Archive", members: [], priority: 5 },
-      leadership: { title: "Command Unit", members: [], priority: 1 },
+      alumni: { title: "Alumni", members: [], priority: 5 },
+      leadership: { title: "Leadership Team", members: [], priority: 1 },
       coordinator: { title: "Coordinators", members: [], priority: 2 },
       executives: { title: "Executives", members: [], priority: 3 },
-      volunteers: { title: "Operatives", members: [], priority: 4 },
+      volunteers: { title: "Volunteers", members: [], priority: 4 },
     };
 
     members.forEach((member) => {
@@ -72,79 +72,62 @@ const OurTeam = () => {
   const renderMemberCard = (member, index) => (
     <div
       key={member.id || index}
-      className="group relative bg-[#111] border border-[#333] hover:border-[#ccff00] transition-colors duration-300 flex flex-col"
+      className="group relative border border-white/5 bg-white/[0.02] backdrop-blur-sm hover:border-[#00e1ff]/30 transition-all duration-300 flex flex-col rounded-2xl overflow-hidden"
     >
-      {/* 1. Header Bar (Visual ID) */}
-      <div className="flex justify-between items-center px-3 py-2 border-b border-[#333] group-hover:border-[#ccff00]/50 bg-[#0a0a0a]">
-        <div className="flex items-center gap-2">
-            <span className="w-1.5 h-1.5 bg-[#ccff00] rounded-full opacity-50 group-hover:opacity-100 group-hover:animate-pulse"/>
-            <span className="text-[10px] font-mono text-[#666] uppercase tracking-widest">
-                ID-{String(index + 1).padStart(3, '0')}
-            </span>
-        </div>
-      </div>
-
-      {/* 2. Image Area (Mugshot Style) */}
-      <div className="relative w-full aspect-square overflow-hidden bg-[#080808]">
-        {/* The Image */}
+      {/* Image Area */}
+      <div className="relative w-full aspect-square overflow-hidden bg-black/40">
         <img
           src={member.profileImageURL}
           alt={member.name}
-          className="w-full h-full object-cover filter grayscale contrast-125 transition-all duration-500 group-hover:grayscale-0 group-hover:contrast-100 group-hover:scale-105"
+          className="w-full h-full object-cover transition-all duration-500 group-hover:scale-105"
           loading="lazy"
         />
-        
-        {/* Technical Overlays */}
-        <div className="absolute inset-0 pointer-events-none border border-transparent group-hover:border-[#ccff00]/20 transition-colors duration-300">
-             {/* Corner Markers */}
-             <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-[#ccff00] opacity-0 group-hover:opacity-100 transition-opacity duration-300"/>
-             <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-[#ccff00] opacity-0 group-hover:opacity-100 transition-opacity duration-300"/>
-             <div className="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-[#ccff00] opacity-0 group-hover:opacity-100 transition-opacity duration-300"/>
-             <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-[#ccff00] opacity-0 group-hover:opacity-100 transition-opacity duration-300"/>
-        </div>
+
+        {/* Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       </div>
 
-      {/* 3. Data Panel */}
-      <div className="p-4 flex flex-col flex-grow justify-between">
+      {/* Content Panel */}
+      <div className="p-6 flex flex-col flex-grow">
         <div>
-            <h3 className="text-xl font-bold text-[#f4f4f5] uppercase tracking-tight mb-1 group-hover:text-white">
+          <h3 className="text-xl font-bold text-white uppercase tracking-tight mb-2">
             {member.name}
-            </h3>
-            <div className="inline-block px-2 py-0.5 border border-[#333] bg-[#0a0a0a] mb-4">
-                <span className="text-[10px] font-bold text-[#ccff00] uppercase tracking-widest">
-                    {member.role}
-                </span>
-            </div>
-            
-            {/* Bio (Truncated for clean grid) */}
-            <p className="text-xs text-[#666] leading-relaxed line-clamp-3 font-mono">
-             {member.bio || "No bio data available in database."}
-            </p>
+          </h3>
+          <div className="inline-block px-3 py-1 border border-white/10 bg-white/[0.05] rounded-full mb-4">
+            <span className="text-[10px] font-bold text-[#00e1ff] uppercase tracking-[0.2em]">
+              {member.role}
+            </span>
+          </div>
+
+          {/* Bio */}
+          <p className="text-sm text-gray-400 leading-relaxed line-clamp-3">
+            {member.bio || "No bio available."}
+          </p>
         </div>
 
-        {/* 4. Social Links (Mechanical Buttons) */}
-        <div className="grid grid-cols-2 gap-2 mt-4 pt-4 border-t border-[#333]">
-           {member.linkedInURL ? (
-            <a href={member.linkedInURL} target="_blank" rel="noopener noreferrer" 
-               className="flex items-center justify-center gap-2 py-2 bg-[#161616] hover:bg-[#ccff00] hover:text-black transition-colors duration-200 text-[#888] text-[10px] font-bold uppercase tracking-wider group/btn"
+        {/* Social Links */}
+        <div className="grid grid-cols-2 gap-3 mt-6 pt-6 border-t border-white/5">
+          {member.linkedInURL ? (
+            <a href={member.linkedInURL} target="_blank" rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 py-2.5 bg-white/5 hover:bg-[#00e1ff] hover:text-black transition-all duration-200 text-gray-400 text-xs font-bold uppercase tracking-wider rounded-lg"
             >
               <SocialIcon type="linkedin" />
-              <span className="hidden sm:inline">Linked</span>
+              <span className="hidden sm:inline">LinkedIn</span>
             </a>
-           ) : (
-             <div className="bg-[#111] opacity-50"/> 
-           )}
+          ) : (
+            <div className="bg-white/5 opacity-30 rounded-lg" />
+          )}
 
-           {member.githubURL ? (
-            <a href={member.githubURL} target="_blank" rel="noopener noreferrer" 
-               className="flex items-center justify-center gap-2 py-2 bg-[#161616] hover:bg-[#ccff00] hover:text-black transition-colors duration-200 text-[#888] text-[10px] font-bold uppercase tracking-wider group/btn"
+          {member.githubURL ? (
+            <a href={member.githubURL} target="_blank" rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 py-2.5 bg-white/5 hover:bg-[#00e1ff] hover:text-black transition-all duration-200 text-gray-400 text-xs font-bold uppercase tracking-wider rounded-lg"
             >
               <SocialIcon type="github" />
-              <span className="hidden sm:inline">Git</span>
+              <span className="hidden sm:inline">GitHub</span>
             </a>
-           ) : (
-             <div className="bg-[#111] opacity-50"/>
-           )}
+          ) : (
+            <div className="bg-white/5 opacity-30 rounded-lg" />
+          )}
         </div>
       </div>
     </div>
@@ -153,12 +136,12 @@ const OurTeam = () => {
   // --- LOADING STATE ---
   if (loading)
     return (
-      <div className={`min-h-screen flex flex-col items-center justify-center bg-[#080808] text-[#ccff00] ${spaceGrotesk.className}`}>
-        <div className="text-sm font-mono tracking-widest uppercase animate-pulse">
-            &gt; Accessing Personnel Database...
+      <div className={`min-h-screen flex flex-col items-center justify-center bg-[#050505] text-[#00e1ff] ${spaceGrotesk.className}`}>
+        <div className="text-sm font-bold tracking-[0.3em] uppercase animate-pulse">
+          Loading Team...
         </div>
-        <div className="w-64 h-1 bg-[#333] mt-4 overflow-hidden">
-            <div className="h-full bg-[#ccff00] w-1/3 animate-[translateX_1s_infinite_linear]"/>
+        <div className="w-64 h-1 bg-white/10 mt-4 overflow-hidden rounded-full">
+          <div className="h-full bg-[#00e1ff] w-1/3 animate-[translateX_1s_infinite_linear]" />
         </div>
       </div>
     );
@@ -166,10 +149,10 @@ const OurTeam = () => {
   // --- ERROR STATE ---
   if (error)
     return (
-      <div className={`min-h-screen flex items-center justify-center bg-[#080808] ${spaceGrotesk.className}`}>
-        <div className="border border-red-900 bg-red-900/10 p-8 text-center max-w-md">
-            <h2 className="text-red-500 font-bold uppercase tracking-widest mb-2">System Error</h2>
-            <p className="text-red-400 font-mono text-xs">{error}</p>
+      <div className={`min-h-screen flex items-center justify-center bg-[#050505] ${spaceGrotesk.className}`}>
+        <div className="border border-red-500/30 bg-red-500/10 p-8 text-center max-w-md rounded-2xl">
+          <h2 className="text-red-400 font-bold uppercase tracking-[0.3em] mb-2">Error</h2>
+          <p className="text-red-300 text-sm">{error}</p>
         </div>
       </div>
     );
@@ -177,52 +160,40 @@ const OurTeam = () => {
   const categorizedMembers = categorizeMembers();
 
   return (
-    <section className={`${spaceGrotesk.className} min-h-screen bg-[#080808] text-[#f4f4f5] pb-24`}>
-      
-      {/* Background Grid */}
-      <div className="fixed inset-0 pointer-events-none opacity-10"
-        style={{
-            backgroundImage: `linear-gradient(#222 1px, transparent 1px), linear-gradient(90deg, #222 1px, transparent 1px)`,
-            backgroundSize: '40px 40px'
-        }}
-      />
+    <section className={`${spaceGrotesk.className} min-h-screen bg-[#050505] text-[#f4f4f5] py-40 px-6 md:px-16`}>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 pt-24">
-        
+      {/* Background Ambience */}
+      <div className="fixed top-0 left-0 w-full h-full pointer-events-none z-0">
+        <div className="absolute top-[-10%] right-[-10%] w-[60%] h-[60%] bg-[#00e1ff]/[0.02] blur-[150px]" />
+        <div className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] bg-[#00e1ff]/[0.01] blur-[120px]" />
+      </div>
+
+      <div className="relative z-10 max-w-7xl mx-auto">
+
         {/* --- PAGE HEADER --- */}
-        <div className="mb-20 border-b border-[#333] pb-8 flex flex-col md:flex-row justify-between items-end">
-            <div>
-                <span className="text-[#ccff00] text-sm font-bold tracking-widest uppercase mb-2 block">
-                    // Directory
-                </span>
-                <h1 className="text-5xl md:text-7xl font-bold uppercase tracking-tighter leading-none">
-                    Team<br/>Manifest
-                </h1>
-            </div>
-            <div className="mt-6 md:mt-0 text-right">
-                <p className="text-[#666] font-mono text-sm">
-                    Total Operatives: {members.length}<br/>
-                    Status: ACTIVE
-                </p>
-            </div>
-        </div>
+        <header className="mb-32 text-center">
+          <h1 className="text-8xl md:text-[20vw] font-bold uppercase tracking-tighter leading-none mb-12">
+            Tea<span className="text-[#00e1ff]">m</span>
+          </h1>
+          <p className="text-gray-500 text-xl md:text-4xl max-w-5xl mx-auto font-light leading-relaxed">
+            Meet the minds behind the innovation.
+          </p>
+        </header>
 
         {/* --- CATEGORY SECTIONS --- */}
         {categorizedMembers.map((category) => (
-          <div key={category.title} className="mb-24">
-            
+          <div key={category.title} className="mb-32">
+
             {/* Category Header */}
-            <div className="flex items-end gap-4 mb-8 border-b border-[#333] pb-2">
-               <h2 className="text-2xl md:text-3xl font-bold uppercase tracking-tight text-[#f4f4f5]">
+            <div className="mb-12">
+              <h2 className="text-4xl md:text-6xl font-bold uppercase tracking-tighter text-white mb-4">
                 {category.title}
               </h2>
-              <span className="text-[#444] font-mono text-xs mb-1">
-                // PRIORITY {category.priority}
-              </span>
+              <div className="h-px w-full bg-white/5" />
             </div>
 
             {/* Members Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
               {category.members.map((member, index) =>
                 renderMemberCard(member, index)
               )}

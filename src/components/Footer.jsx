@@ -82,13 +82,9 @@ const Footer = () => {
                     <div>
                         &copy; {currentYear} APP TEAM NITH
                     </div>
-                    <div className="flex gap-10">
-                        <a href="#" className="hover:text-white transition-colors duration-300">Privacy</a>
-                        <a href="#" className="hover:text-white transition-colors duration-300">Guidelines</a>
-                        <a href="#" className="hover:text-white transition-colors duration-300">Terms</a>
-                    </div>
+
                     <div className="flex items-center gap-2">
-                        <span className="text-white/20">Design:</span> AppTeam Core
+                        <span className="text-white/20">Developer:</span><a href="https://github.com/ayush00git" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors duration-300">Ayush</a>
                     </div>
                 </div>
 
