@@ -2,7 +2,7 @@
 import React from 'react';
 import { Space_Grotesk } from "next/font/google";
 import Image from 'next/image';
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import SmoothScroll from "@/components/SmoothScroll";
 
 const spaceGrotesk = Space_Grotesk({
@@ -129,6 +129,11 @@ const EventCard = ({ event }) => {
 };
 
 const Events = () => {
+  // Parallax effect for Events header
+  const { scrollYProgress } = useScroll();
+  const nParallax = useTransform(scrollYProgress, [0, 0.3], [0, -250]);
+  const tParallax = useTransform(scrollYProgress, [0, 0.3], [0, -350]);
+  const sParallax = useTransform(scrollYProgress, [0, 0.3], [0, -450]);
   return (
     <SmoothScroll>
       <section className={`${spaceGrotesk.className} min-h-screen bg-[#050505] text-[#f4f4f5] py-40 px-6 md:px-16 overflow-hidden`}>
@@ -150,7 +155,7 @@ const Events = () => {
               className="text-center"
             >
               <h1 className="text-8xl md:text-[20vw] font-bold uppercase tracking-tighter leading-none mb-12">
-                Event<span className="text-[#00e1ff]">s</span>
+                Eve<motion.span style={{ y: nParallax }} className="inline-block">n</motion.span><motion.span style={{ y: tParallax }} className="inline-block">t</motion.span><motion.span style={{ y: sParallax }} className="inline-block text-[#00e1ff]">s</motion.span>
               </h1>
               <p className="text-gray-500 text-xl md:text-4xl max-w-5xl mx-auto font-light leading-relaxed">
                 A definitive archive of operations and large-scale technical infrastructure.

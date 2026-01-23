@@ -1,6 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { Space_Grotesk } from "next/font/google";
+import { motion, useScroll, useTransform } from "framer-motion";
+import SmoothScroll from "@/components/SmoothScroll";
 
 const spaceGrotesk = Space_Grotesk({
   weight: ["300", "400", "500", "700"],
@@ -11,6 +13,12 @@ const OurTeam = () => {
   const [members, setMembers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  // Parallax effect for Team header
+  const { scrollYProgress } = useScroll();
+  const eParallax = useTransform(scrollYProgress, [0, 0.3], [0, -150]);
+  const aParallax = useTransform(scrollYProgress, [0, 0.3], [0, -250]);
+  const mParallax = useTransform(scrollYProgress, [0, 0.3], [0, -350]);
 
   useEffect(() => {
     const fetchMembers = async () => {
@@ -160,6 +168,7 @@ const OurTeam = () => {
   const categorizedMembers = categorizeMembers();
 
   return (
+    <SmoothScroll>
     <section className={`${spaceGrotesk.className} min-h-screen bg-[#050505] text-[#f4f4f5] py-40 px-6 md:px-16`}>
 
       {/* Background Ambience */}
@@ -173,7 +182,7 @@ const OurTeam = () => {
         {/* --- PAGE HEADER --- */}
         <header className="mb-32 text-center">
           <h1 className="text-8xl md:text-[20vw] font-bold uppercase tracking-tighter leading-none mb-12">
-            Tea<span className="text-[#00e1ff]">m</span>
+            T<motion.span style={{ y: eParallax }} className="inline-block">e</motion.span><motion.span style={{ y: aParallax }} className="inline-block">a</motion.span><motion.span style={{ y: mParallax }} className="inline-block text-[#00e1ff]">m</motion.span>
           </h1>
           <p className="text-gray-500 text-xl md:text-4xl max-w-5xl mx-auto font-light leading-relaxed">
             Meet the minds behind the innovation.
@@ -202,6 +211,7 @@ const OurTeam = () => {
         ))}
       </div>
     </section>
+    </SmoothScroll>
   );
 };
 

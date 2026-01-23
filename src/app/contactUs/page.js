@@ -3,7 +3,7 @@
 import SmoothScroll from "@/components/SmoothScroll";
 import { useState, useEffect, useRef } from "react";
 import { Space_Grotesk } from "next/font/google";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 
 const spaceGrotesk = Space_Grotesk({
   weight: ["300", "400", "500", "700"],
@@ -19,6 +19,11 @@ export default function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [statusLog, setStatusLog] = useState(null);
   const messageTimeoutRef = useRef(null);
+
+  // Parallax effect for Contact header
+  const { scrollYProgress } = useScroll();
+  const cParallax = useTransform(scrollYProgress, [0, 0.3], [0, -50]);
+  const tParallax = useTransform(scrollYProgress, [0, 0.3], [0, -100]);
 
   const handleChange = (e) => {
     setFormData({
@@ -85,8 +90,8 @@ export default function ContactForm() {
               transition={{ duration: 1 }}
               className="text-center"
             >
-              <h1 className="text-8xl md:text-[20vw] font-bold uppercase tracking-tighter leading-none mb-12">
-                Contac<span className="text-[#00e1ff]">t</span>
+              <h1 className="text-8xl md:text-[20vw] font-bold uppercase tracking-tighter leading-none mb-12 flex justify-center items-baseline flex-nowrap">
+                <span>Conta</span><motion.span style={{ y: cParallax }} className="inline-block">c</motion.span><motion.span style={{ y: tParallax }} className="inline-block text-[#00e1ff]">t</motion.span>
               </h1>
               <p className="text-gray-500 text-xl md:text-4xl max-w-5xl mx-auto font-light leading-relaxed">
                 Let's build something extraordinary together.
@@ -102,7 +107,7 @@ export default function ContactForm() {
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 1, delay: 0.2 }}
-              className="flex flex-col justify-center"
+              className="flex flex-col justify-center order-2 lg:order-1"
             >
               <h2 className="text-5xl md:text-7xl font-bold uppercase tracking-tighter leading-[0.9] mb-8">
                 Get In<br />Touch
@@ -207,10 +212,10 @@ export default function ContactForm() {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -10 }}
                         className={`text-sm p-4 rounded-lg border ${statusLog.type === 'success'
-                            ? 'border-green-500/30 text-green-400 bg-green-500/10'
-                            : statusLog.type === 'error'
-                              ? 'border-red-500/30 text-red-400 bg-red-500/10'
-                              : 'border-[#00e1ff]/30 text-[#00e1ff] bg-[#00e1ff]/10'
+                          ? 'border-green-500/30 text-green-400 bg-green-500/10'
+                          : statusLog.type === 'error'
+                            ? 'border-red-500/30 text-red-400 bg-red-500/10'
+                            : 'border-[#00e1ff]/30 text-[#00e1ff] bg-[#00e1ff]/10'
                           }`}
                       >
                         {statusLog.text}
@@ -239,7 +244,7 @@ export default function ContactForm() {
                 </form>
               </div>
             </motion.div>
-          </div>        
+          </div>
         </div>
       </section>
     </SmoothScroll>

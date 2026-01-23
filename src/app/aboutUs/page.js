@@ -2,7 +2,7 @@
 import React from "react";
 import { Space_Grotesk } from "next/font/google";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import SmoothScroll from "@/components/SmoothScroll";
 
 const spaceGrotesk = Space_Grotesk({
@@ -79,6 +79,11 @@ const LogEntry = ({ data, index }) => {
 };
 
 const AboutUs = () => {
+  // Parallax effect for About Us header
+  const { scrollYProgress } = useScroll();
+  const uParallax = useTransform(scrollYProgress, [0, 0.3], [0, -250]);
+  const sParallax = useTransform(scrollYProgress, [0, 0.3], [0, -350]);
+
   return (
     <SmoothScroll>
       <section className={`${spaceGrotesk.className} min-h-screen bg-[#050505] text-[#f4f4f5] py-40 px-6 md:px-16 overflow-hidden`}>
@@ -99,7 +104,7 @@ const AboutUs = () => {
               transition={{ duration: 1 }}
               className="text-8xl md:text-[18vw] font-bold uppercase tracking-tighter leading-none mb-12 text-center"
             >
-              About <span className="text-[#00e1ff]">Us</span>
+              About <motion.span style={{ y: uParallax }} className="inline-block">U</motion.span><motion.span style={{ y: sParallax }} className="inline-block text-[#00e1ff]">s</motion.span>
             </motion.h1>
 
             <motion.p
