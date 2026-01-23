@@ -2,8 +2,6 @@ import "./globals.css";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
-import Preloader from "../components/Preloader";
-
 export const metadata = {
   title: "App Team",
   description: "Converted from MERN to Next.js",
@@ -21,7 +19,6 @@ export default function RootLayout({ children }) {
         <meta name="google-site-verification" content="wSkX_8y2bFPHN0i7D-DUVeKV2QAfnC2NVDFgCh0Cnhc" />
       </head>
       <body>
-        <Preloader />
         <Navbar />
         <main>{children}</main>
         <Footer />

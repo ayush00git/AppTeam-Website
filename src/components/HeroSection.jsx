@@ -62,9 +62,37 @@ function HeroSection() {
                             </motion.div>
                         </div>
 
-                        <p className="mt-8 text-xl md:text-3xl font-light text-[#888] max-w-2xl leading-relaxed">
-                            Crafting premium digital experiences through <span className="text-white font-normal underline decoration-[#00e1ff]/30 decoration-2 underline-offset-8">thoughtful design</span> and elite engineering.
-                        </p>
+                        <motion.p
+                            className="mt-8 text-xl md:text-3xl font-light text-[#888] max-w-2xl leading-relaxed"
+                            initial="hidden"
+                            animate="visible"
+                            variants={{
+                                visible: { transition: { staggerChildren: 0.03, delayChildren: 1.5 } }
+                            }}
+                        >
+                            {/* Part 1 */}
+                            {"Crafting premium digital experiences through ".split("").map((char, i) => (
+                                <motion.span key={`part1-${i}`} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
+                                    {char}
+                                </motion.span>
+                            ))}
+
+                            {/* Styled Part */}
+                            <span className="text-white font-normal underline decoration-[#00e1ff]/30 decoration-2 underline-offset-8">
+                                {"thoughtful design".split("").map((char, i) => (
+                                    <motion.span key={`part2-${i}`} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
+                                        {char}
+                                    </motion.span>
+                                ))}
+                            </span>
+
+                            {/* Part 3 */}
+                            {" and elite engineering.".split("").map((char, i) => (
+                                <motion.span key={`part3-${i}`} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
+                                    {char}
+                                </motion.span>
+                            ))}
+                        </motion.p>
                     </motion.div>
                 </main>
 
