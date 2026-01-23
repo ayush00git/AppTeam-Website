@@ -55,12 +55,12 @@ const eventsData = [
 const StickyRow = ({ pair, index }) => {
   return (
     <div
-      className="sticky top-0 h-screen w-full flex items-center justify-center bg-[#050505]"
+      className="sticky top-0 h-auto md:h-screen w-full flex items-center justify-center bg-[#050505] py-4 md:py-0"
       style={{ zIndex: index + 1 }}
     >
-      <div className="grid grid-cols-2 gap-4 md:gap-8 w-full h-[50vh] md:h-[75vh]">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 w-full h-auto md:h-[75vh]">
         {pair.map((img, i) => (
-          <div key={i} className="relative w-full h-full border border-white/5 bg-white/[0.02] backdrop-blur-sm p-1 rounded-2xl overflow-hidden">
+          <div key={i} className="relative w-full h-[50vh] md:h-full border border-white/5 bg-white/[0.02] backdrop-blur-sm p-1 rounded-2xl overflow-hidden">
             <Image
               src={img.src}
               alt={img.alt}
@@ -164,17 +164,6 @@ const Events = () => {
               <EventCard key={index} event={event} />
             ))}
           </div>
-
-          {/* --- END MARKER --- */}
-          <footer className="pt-40 flex justify-center">
-            <div className="flex flex-col items-center gap-6 text-center">
-              <div className="w-px h-32 bg-linear-to-b from-[#00e1ff]/40 to-transparent" />
-              <span className="text-[10px] font-bold tracking-[0.8em] uppercase text-[#00e1ff]">
-                Fin.
-              </span>
-            </div>
-          </footer>
-
         </div>
       </section>
     </SmoothScroll>
