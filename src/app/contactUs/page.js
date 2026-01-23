@@ -94,7 +94,7 @@ export default function ContactForm() {
                 <span>Conta</span><motion.span style={{ y: cParallax }} className="inline-block">c</motion.span><motion.span style={{ y: tParallax }} className="inline-block text-[#00e1ff]">t</motion.span>
               </h1>
               <p className="text-gray-500 text-xl md:text-4xl max-w-5xl mx-auto font-light leading-relaxed">
-                Let's build something extraordinary together.
+                Let&apos;s build something extraordinary together.
               </p>
             </motion.div>
           </header>
@@ -113,7 +113,7 @@ export default function ContactForm() {
                 Get In<br />Touch
               </h2>
               <p className="text-gray-400 text-xl font-light leading-relaxed mb-16 max-w-lg">
-                Have a project in mind? Want to collaborate? Or just want to say hello? We'd love to hear from you.
+                Have a project in mind? Want to collaborate? Or just want to say hello? We&apos;d love to hear from you.
               </p>
 
               {/* Contact Info Cards */}

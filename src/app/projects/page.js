@@ -98,7 +98,7 @@ const ProjectCard = ({ project }) => (
     <div className="p-6 flex-grow flex flex-col">
       <div className="mb-4">
         <span className="inline-block px-2 py-0.5 border border-[#333] text-[10px] font-bold text-[#888] mb-3 group-hover:border-[#ccff00] group-hover:text-[#ccff00] transition-colors">
-            {project.category} // {project.year}
+          {project.category} {"//"} {project.year}
         </span>
         <h3 className="text-2xl font-bold uppercase text-[#f4f4f5] leading-none mb-3 group-hover:text-[#ccff00] transition-colors">
           {project.title}
@@ -111,108 +111,107 @@ const ProjectCard = ({ project }) => (
       {/* Tech Stack */}
       <div className="mt-auto pt-6 border-t border-[#222] group-hover:border-[#333]">
         <div className="flex flex-wrap gap-2 mb-6">
-            {project.tech.map(t => (
-                <span key={t} className="text-[10px] text-[#555] bg-[#111] px-1.5 py-0.5 border border-[#222]">
-                    {t}
-                </span>
-            ))}
+          {project.tech.map(t => (
+            <span key={t} className="text-[10px] text-[#555] bg-[#111] px-1.5 py-0.5 border border-[#222]">
+              {t}
+            </span>
+          ))}
         </div>
-        
+
         {/* Link */}
-        <a 
-            href={project.link}
-            target="_blank"
-            className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#f4f4f5] group-hover:text-[#ccff00] transition-colors"
+        <a
+          href={project.link}
+          target="_blank"
+          className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#f4f4f5] group-hover:text-[#ccff00] transition-colors"
         >
-            View Source
-            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+          View Source
+          <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
         </a>
       </div>
     </div>
 
     {/* Decorative Corners */}
-    <div className="absolute top-0 left-0 w-1 h-1 bg-[#333] group-hover:bg-black z-10"/>
-    <div className="absolute top-0 right-0 w-1 h-1 bg-[#333] group-hover:bg-black z-10"/>
-    <div className="absolute bottom-0 left-0 w-1 h-1 bg-[#333] group-hover:bg-black z-10"/>
-    <div className="absolute bottom-0 right-0 w-1 h-1 bg-[#333] group-hover:bg-black z-10"/>
+    <div className="absolute top-0 left-0 w-1 h-1 bg-[#333] group-hover:bg-black z-10" />
+    <div className="absolute top-0 right-0 w-1 h-1 bg-[#333] group-hover:bg-black z-10" />
+    <div className="absolute bottom-0 left-0 w-1 h-1 bg-[#333] group-hover:bg-black z-10" />
+    <div className="absolute bottom-0 right-0 w-1 h-1 bg-[#333] group-hover:bg-black z-10" />
   </motion.div>
 );
 
 function Projects() {
-    const [filter, setFilter] = useState("ALL");
+  const [filter, setFilter] = useState("ALL");
 
-    const filteredProjects = filter === "ALL" 
-        ? allProjects 
-        : allProjects.filter(p => p.category.includes(filter));
+  const filteredProjects = filter === "ALL"
+    ? allProjects
+    : allProjects.filter(p => p.category.includes(filter));
 
-    const tabs = ["ALL", "WEB", "APP", "BACKEND", "AI/ML"];
+  const tabs = ["ALL", "WEB", "APP", "BACKEND", "AI/ML"];
 
-    return (
-        <div className={`min-h-screen bg-[#080808] text-[#f4f4f5] pb-24 ${spaceGrotesk.className}`}>
-            
-            {/* Background Grid */}
-            <div className="fixed inset-0 pointer-events-none opacity-10"
-                style={{
-                    backgroundImage: `linear-gradient(#222 1px, transparent 1px), linear-gradient(90deg, #222 1px, transparent 1px)`,
-                    backgroundSize: '30px 30px'
-                }}
-            />
+  return (
+    <div className={`min-h-screen bg-[#080808] text-[#f4f4f5] pb-24 ${spaceGrotesk.className}`}>
 
-            <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 pt-24">
-                
-                {/* --- HEADER --- */}
-                <div className="flex flex-col md:flex-row justify-between items-end mb-16 border-b border-[#333] pb-8">
-                    <div>
-                        <span className="text-[#ccff00] text-sm font-bold tracking-widest uppercase mb-2 block">
-                            // Repository
-                        </span>
-                        <h1 className="text-6xl md:text-8xl font-bold uppercase tracking-tighter leading-none">
-                            Project<br/>Archive
-                        </h1>
-                    </div>
-                    
-                    {/* Filter Tabs */}
-                    <div className="mt-8 md:mt-0 flex flex-wrap gap-2">
-                        {tabs.map(tab => (
-                            <button
-                                key={tab}
-                                onClick={() => setFilter(tab)}
-                                className={`px-4 py-2 text-xs font-bold tracking-widest uppercase border transition-all duration-300 ${
-                                    filter === tab 
-                                    ? "bg-[#ccff00] text-black border-[#ccff00]" 
-                                    : "bg-transparent text-[#666] border-[#333] hover:border-[#ccff00] hover:text-[#ccff00]"
-                                }`}
-                            >
-                                {tab}
-                            </button>
-                        ))}
-                    </div>
-                </div>
+      {/* Background Grid */}
+      <div className="fixed inset-0 pointer-events-none opacity-10"
+        style={{
+          backgroundImage: `linear-gradient(#222 1px, transparent 1px), linear-gradient(90deg, #222 1px, transparent 1px)`,
+          backgroundSize: '30px 30px'
+        }}
+      />
 
-                {/* --- GRID --- */}
-                <motion.div 
-                    layout
-                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-                >
-                    <AnimatePresence>
-                        {filteredProjects.map((project) => (
-                            <ProjectCard key={project.id} project={project} />
-                        ))}
-                    </AnimatePresence>
-                </motion.div>
+      <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 pt-24">
 
-                {/* --- EMPTY STATE (If filter has no results) --- */}
-                {filteredProjects.length === 0 && (
-                    <div className="py-24 text-center border border-dashed border-[#333]">
-                        <p className="text-[#666] font-mono uppercase">
-                            No deployments found in this sector.
-                        </p>
-                    </div>
-                )}
+        {/* --- HEADER --- */}
+        <div className="flex flex-col md:flex-row justify-between items-end mb-16 border-b border-[#333] pb-8">
+          <div>
+            <span className="text-[#ccff00] text-sm font-bold tracking-widest uppercase mb-2 block">
+              {"//"} Repository
+            </span>
+            <h1 className="text-6xl md:text-8xl font-bold uppercase tracking-tighter leading-none">
+              Project<br />Archive
+            </h1>
+          </div>
 
-            </div>
+          {/* Filter Tabs */}
+          <div className="mt-8 md:mt-0 flex flex-wrap gap-2">
+            {tabs.map(tab => (
+              <button
+                key={tab}
+                onClick={() => setFilter(tab)}
+                className={`px-4 py-2 text-xs font-bold tracking-widest uppercase border transition-all duration-300 ${filter === tab
+                    ? "bg-[#ccff00] text-black border-[#ccff00]"
+                    : "bg-transparent text-[#666] border-[#333] hover:border-[#ccff00] hover:text-[#ccff00]"
+                  }`}
+              >
+                {tab}
+              </button>
+            ))}
+          </div>
         </div>
-    );
+
+        {/* --- GRID --- */}
+        <motion.div
+          layout
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+        >
+          <AnimatePresence>
+            {filteredProjects.map((project) => (
+              <ProjectCard key={project.id} project={project} />
+            ))}
+          </AnimatePresence>
+        </motion.div>
+
+        {/* --- EMPTY STATE (If filter has no results) --- */}
+        {filteredProjects.length === 0 && (
+          <div className="py-24 text-center border border-dashed border-[#333]">
+            <p className="text-[#666] font-mono uppercase">
+              No deployments found in this sector.
+            </p>
+          </div>
+        )}
+
+      </div>
+    </div>
+  );
 }
 
 export default Projects;
