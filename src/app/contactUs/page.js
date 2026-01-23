@@ -239,7 +239,7 @@ export default function ContactForm() {
                 </form>
               </div>
             </motion.div>
-          </div>mongodb+srv://ayush_db_user:fwkVSnZJdrTkJOxh@cluster0.2mrvcvl.mongodb.net/?appName=Cluster0
+          </div>        
         </div>
       </section>
     </SmoothScroll>
